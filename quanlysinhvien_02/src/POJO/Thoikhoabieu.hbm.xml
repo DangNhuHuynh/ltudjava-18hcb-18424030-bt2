@@ -1,0 +1,25 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<!-- Generated Aug 8, 2019 5:07:22 PM by Hibernate Tools 4.3.1 -->
+<hibernate-mapping>
+    <class name="POJO.Thoikhoabieu" table="thoikhoabieu" catalog="quanlysinhvien" optimistic-lock="version">
+        <composite-id name="id" class="POJO.ThoikhoabieuId">
+            <key-property name="maLop" type="string">
+                <column name="MaLop" length="10" />
+            </key-property>
+            <key-property name="maMh" type="string">
+                <column name="MaMH" length="10" />
+            </key-property>
+        </composite-id>
+        <many-to-one name="lop" class="POJO.Lop" update="false" insert="false" fetch="select">
+            <column name="MaLop" length="10" not-null="true" />
+        </many-to-one>
+        <many-to-one name="monhoc" class="POJO.Monhoc" update="false" insert="false" fetch="select">
+            <column name="MaMH" length="10" not-null="true" />
+        </many-to-one>
+        <property name="phongHoc" type="string">
+            <column name="PhongHoc" length="10" />
+        </property>
+    </class>
+</hibernate-mapping>
