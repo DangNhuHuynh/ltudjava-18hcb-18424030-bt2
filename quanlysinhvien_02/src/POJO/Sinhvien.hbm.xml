@@ -1,24 +1,24 @@
 <?xml version="1.0"?>
 <!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
 "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
-<!-- Generated Aug 8, 2019 5:07:22 PM by Hibernate Tools 4.3.1 -->
+<!-- Generated Aug 10, 2019 3:04:01 PM by Hibernate Tools 4.3.1 -->
 <hibernate-mapping>
     <class name="POJO.Sinhvien" table="sinhvien" catalog="quanlysinhvien" optimistic-lock="version">
-        <id name="mssv" type="int">
-            <column name="MSSV" />
+        <id name="mssv" type="string">
+            <column name="MSSV" length="10" />
             <generator class="assigned" />
         </id>
-        <many-to-one name="lop" class="POJO.Lop" fetch="select">
-            <column name="MaLop" length="10" />
-        </many-to-one>
         <property name="hoTen" type="string">
             <column name="HoTen" />
         </property>
         <property name="gioiTinh" type="string">
             <column name="GioiTinh" />
         </property>
-        <property name="cmnd" type="java.lang.Integer">
-            <column name="CMND" />
-        </property>
+        <property name="cmnd" type="string">
+            <column name="CMND" length="11" />
+        </property>                
+        <many-to-one class="POJO.Lop" name="lop" fetch="select">
+            <column length="10" name="MaLop" not-null="true"/>
+        </many-to-one>
     </class>
 </hibernate-mapping>

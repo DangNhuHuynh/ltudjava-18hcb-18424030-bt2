@@ -46,9 +46,10 @@ Contributor(s):
     <property name="hibernate.connection.url">jdbc:mysql://localhost:3306/quanlysinhvien?zeroDateTimeBehavior=convertToNull</property>
     <property name="hibernate.connection.username">root</property>
     <mapping resource="POJO/Lop.hbm.xml"/>
+    <mapping resource="POJO/Diem.hbm.xml"/>
     <mapping resource="POJO/Monhoc.hbm.xml"/>
     <mapping resource="POJO/Account.hbm.xml"/>
-    <mapping resource="POJO/Thoikhoabieu.hbm.xml"/>
     <mapping resource="POJO/Sinhvien.hbm.xml"/>
+    <mapping resource="POJO/Thoikhoabieu.hbm.xml"/>
   </session-factory>
 </hibernate-configuration>

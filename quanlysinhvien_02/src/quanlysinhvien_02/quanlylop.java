@@ -6,8 +6,23 @@
 package quanlysinhvien_02;
 
 import DAO.AccountDAO;
+import DAO.LopDAO;
+import DAO.SinhVienDAO;
 import POJO.Account;
+import POJO.Lop;
+import POJO.Sinhvien;
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.FileReader;
+import java.io.OutputStreamWriter;
+import java.nio.charset.StandardCharsets;
+import java.util.*;
+import javax.swing.DefaultComboBoxModel;
+import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableModel;
 import static quanlysinhvien_02.login.account;
 /**
  *
@@ -18,11 +33,15 @@ public class quanlylop extends javax.swing.JFrame {
     /**
      * Creates new form quanlylop
      */
+    private final int IMPORT_FILE = 1;
+    private final int EXPORT_FILE = 2;
+    private String[] columName = {
+        "STT", "MSSV", "Họ Tên", "Giới Tính", "CMND"
+    };
     
-//    static Account account = new Account();
     public quanlylop() {
         initComponents();
-        panelDoiMK.setVisible(false);
+        initLayout();
     }
 
     /**
@@ -47,6 +66,14 @@ public class quanlylop extends javax.swing.JFrame {
         textMKMoi = new javax.swing.JTextField();
         btnLogout = new javax.swing.JButton();
         btnDoiMK = new javax.swing.JButton();
+        btnImport = new javax.swing.JButton();
+        btnReload = new javax.swing.JButton();
+        jLabel2 = new javax.swing.JLabel();
+        classCombo = new javax.swing.JComboBox<>();
+        lableDSSV = new javax.swing.JLabel();
+        notifySelectClass = new javax.swing.JLabel();
+        lableNotify = new javax.swing.JLabel();
+        btnExport = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
@@ -161,21 +188,95 @@ public class quanlylop extends javax.swing.JFrame {
             }
         });
 
+        btnImport.setBackground(new java.awt.Color(153, 204, 255));
+        btnImport.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        btnImport.setText("Import");
+        btnImport.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnImportActionPerformed(evt);
+            }
+        });
+
+        btnReload.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        btnReload.setText("Reload");
+        btnReload.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnReloadActionPerformed(evt);
+            }
+        });
+
+        jLabel2.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
+        jLabel2.setText("Danh Sách Lớp:");
+
+        classCombo.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+        classCombo.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "--" }));
+        classCombo.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                classComboActionPerformed(evt);
+            }
+        });
+
+        lableDSSV.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
+        lableDSSV.setForeground(new java.awt.Color(0, 153, 153));
+        lableDSSV.setText("DSSV");
+
+        notifySelectClass.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        notifySelectClass.setForeground(new java.awt.Color(0, 153, 153));
+        notifySelectClass.setText("**Chọn lớp để xem DSSV");
+
+        lableNotify.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
+        lableNotify.setForeground(new java.awt.Color(255, 0, 0));
+        lableNotify.setText("jLabel3");
+
+        btnExport.setBackground(new java.awt.Color(153, 204, 255));
+        btnExport.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        btnExport.setText("Export");
+        btnExport.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnExportActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addGap(0, 0, Short.MAX_VALUE)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 870, javax.swing.GroupLayout.PREFERRED_SIZE))
             .addGroup(layout.createSequentialGroup()
                 .addGap(116, 116, 116)
                 .addComponent(panelDoiMK, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 26, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(btnLogout)
                     .addComponent(btnDoiMK, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(24, 24, 24))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                .addGroup(layout.createSequentialGroup()
+                                    .addComponent(jLabel2)
+                                    .addGap(18, 18, 18)
+                                    .addComponent(classCombo, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addGap(68, 68, 68))
+                                .addGroup(layout.createSequentialGroup()
+                                    .addComponent(notifySelectClass)
+                                    .addGap(86, 86, 86)))
+                            .addComponent(btnImport, javax.swing.GroupLayout.PREFERRED_SIZE, 139, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGap(151, 151, 151))
+                        .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                            .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 867, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addContainerGap()))
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(lableDSSV)
+                        .addGap(18, 18, 18)
+                        .addComponent(lableNotify, javax.swing.GroupLayout.PREFERRED_SIZE, 261, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(btnReload, javax.swing.GroupLayout.PREFERRED_SIZE, 134, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
+                        .addComponent(btnExport, javax.swing.GroupLayout.PREFERRED_SIZE, 122, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(41, 41, 41))))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -189,7 +290,20 @@ public class quanlylop extends javax.swing.JFrame {
                         .addComponent(btnLogout)
                         .addGap(25, 25, 25)
                         .addComponent(btnDoiMK)))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 115, Short.MAX_VALUE)
+                .addGap(52, 52, 52)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(btnImport)
+                    .addComponent(jLabel2)
+                    .addComponent(classCombo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(notifySelectClass)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 75, Short.MAX_VALUE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(lableDSSV)
+                    .addComponent(lableNotify)
+                    .addComponent(btnExport)
+                    .addComponent(btnReload))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 188, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
         );
@@ -198,6 +312,24 @@ public class quanlylop extends javax.swing.JFrame {
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
+    private void initLayout() {
+//        className.setVisible(false);
+        btnExport.setVisible(false);
+        panelDoiMK.setVisible(false);
+        jsvTable.setVisible(false);
+        List<Lop> listLH = LopDAO.layDSLop();
+        if (listLH.size() > 0) {
+            notifySelectClass.setVisible(true);
+            lableNotify.setVisible(false);
+//            panelOption.setVisible(true);
+            addDataForComboBoxClass();
+        } else {
+            notifySelectClass.setVisible(false);
+            lableNotify.setText("Chưa Có Danh Sách Lớp!");
+//            panelOption.setVisible(false);
+        }
+    }
+    
     private boolean validFormChangePass(){
         boolean valid = false;
         String oldPass = textMKCu.getText();
@@ -254,6 +386,193 @@ public class quanlylop extends javax.swing.JFrame {
         panelDoiMK.setVisible(true);
     }//GEN-LAST:event_btnDoiMKActionPerformed
 
+    private void btnImportActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnImportActionPerformed
+        importExportFile("Choose file import", IMPORT_FILE);
+    }//GEN-LAST:event_btnImportActionPerformed
+
+    private void btnReloadActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnReloadActionPerformed
+        addDataForTableListSV();
+    }//GEN-LAST:event_btnReloadActionPerformed
+
+    private void classComboActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_classComboActionPerformed
+        if(classCombo.getSelectedItem().toString().equals("--")){
+            JOptionPane.showMessageDialog(null, "!!! Chưa Có Danh Sách Lớp");
+        } else{            
+            addDataForTableListSV();
+        }
+    }//GEN-LAST:event_classComboActionPerformed
+
+    private void btnExportActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnExportActionPerformed
+        importExportFile("Export File", EXPORT_FILE);
+    }//GEN-LAST:event_btnExportActionPerformed
+
+    private void addDataForComboBoxClass(){
+        List<Lop> listLH = LopDAO.layDSLop();
+        DefaultComboBoxModel cbModel = new DefaultComboBoxModel();
+        for (Lop i : listLH) {
+//            System.out.println("ma lop: " + i.getMaLop());
+        // add từng tên lớp vào comboBox
+            String name = i.getMaLop();
+            cbModel.addElement(name);
+        }          
+        classCombo.setModel(cbModel);
+    }
+    
+    public String getClassNameInComboBox(){
+        String result = classCombo.getSelectedItem().toString();
+        return result;
+    }
+    
+    private void addDataForTableListSV(){  
+        jsvTable.setVisible(true);
+        String select = getClassNameInComboBox();
+//        System.out.println("Select: " + select);
+        lableDSSV.setText("DANH SÁCH SINH VIÊN:  " + select);  
+        Lop lop = LopDAO.layThongTinLop(select);
+          
+        DefaultTableModel tbModel = new DefaultTableModel();
+        tbModel.setColumnIdentifiers(columName);
+        int stt = 1;
+        
+        if(lop.getListSV().size() > 0){
+            btnExport.setVisible(true);
+
+            // get danh sách sinh viên và hiển thị lên table    
+            for (Sinhvien sv : lop.getListSV()) {
+                String[] info = new String[5];
+                info[0] = String.valueOf(stt);
+                info[1] = sv.getMssv();
+                info[2] = sv.getHoTen();
+                info[3] = sv.getGioiTinh();
+                info[4] = sv.getCmnd();
+
+                tbModel.addRow(info);
+                stt++;
+            }
+            jsvTable.setModel(tbModel);
+        } 
+        else{
+            btnExport.setVisible(false);
+            tbModel.setColumnIdentifiers(columName);
+            jsvTable.setModel(tbModel);
+        }            
+    }
+    
+    private void importExportFile(String title, int type) {
+        JFileChooser fileChooser = new JFileChooser();
+        fileChooser.setDialogTitle(title);
+        int choose = -1;
+        switch (type) {
+            case IMPORT_FILE:
+                choose = fileChooser.showOpenDialog(null);
+                break;
+            case EXPORT_FILE:
+                choose = fileChooser.showSaveDialog(null);
+                break;
+        }
+
+        if (choose == JFileChooser.APPROVE_OPTION) {
+            File f = fileChooser.getSelectedFile();
+            switch (type) {
+                case IMPORT_FILE:
+                    readFile(f);
+                    break;
+                case EXPORT_FILE:
+                    writeFile(f);
+                    break;
+            }
+        }
+    }
+    
+    private void readFile(File file) {
+        try {
+            try (FileReader reader = new FileReader(file)) {
+                BufferedReader buffer = new BufferedReader(reader);
+
+                String line;
+                
+                line = buffer.readLine();
+                String[] tenLop = line.split(",");
+//                String maLop = tenLop[0].replaceAll("\\?", "");
+                Lop lop = LopDAO.layThongTinLop(tenLop[0]);
+                
+                boolean checkLopHoc = true;
+                if(lop == null) {
+                    checkLopHoc = false;
+//                System.out.println(tenLop[0]);
+                    lop = new Lop();
+                    lop.setMaLop(tenLop[0]);
+                } 
+                if(checkLopHoc != true){ 
+                    boolean kq = LopDAO.themLop(lop);
+                    if(kq == true){
+//                        System.out.println("Thêm Thành công");
+                        while ((line = buffer.readLine()) != null) {                     
+                            String[] info = line.split(",");
+                            Sinhvien sv = new Sinhvien(info[1], info[2], info[3], info[4], lop);
+                            
+                            SinhVienDAO.themSV(sv);
+                        }
+                    } else {
+                        System.out.println("Không Thành công");
+                    }
+                }
+                buffer.close();
+            }
+            initLayout();
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(null, "Error to open file: " + e.toString(), "Error", JOptionPane.ERROR_MESSAGE);
+        }
+    }
+
+    private void writeFile(File file) {
+        try{            
+            file.createNewFile();
+            FileOutputStream fos = new FileOutputStream(file);
+            
+            BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(fos, StandardCharsets.UTF_8));
+                        
+            String tenLop = getClassNameInComboBox();
+            Lop lop = LopDAO.layThongTinLop(tenLop);
+            
+            writer.append(tenLop);
+            writer.append('\n');
+            
+            writer.append("STT,");
+            writer.append(columName[1]);
+            writer.append(",");
+            writer.append(columName[2]);
+            writer.append(",");
+            writer.append(columName[3]);
+            writer.append(",");
+            writer.append(columName[4]);
+            writer.append('\n');            
+                        
+            if (lop.getListSV().size() > 0) {
+                int stt = 1;
+                // Lấy danh sách học sinh trong lớp
+                for (Sinhvien sv : lop.getListSV()) {
+                    writer.append(Integer.toString(stt) + ',');                    
+                    writer.append(sv.getMssv());
+                    writer.append(',');
+                    writer.append(sv.getHoTen());
+                    writer.append(',');
+                    writer.append(sv.getGioiTinh());
+                    writer.append(',');
+                    writer.append(sv.getCmnd());
+                    writer.append('\n');
+                    
+                    stt++;
+                }
+                
+            }
+            writer.close();
+            
+        } catch(Exception e) {
+            JOptionPane.showMessageDialog(null, "Error to export file: " + e.toString(), "Error", JOptionPane.ERROR_MESSAGE);
+        }
+    }
+    
     /**
      * @param args the command line arguments
      */
@@ -291,14 +610,22 @@ public class quanlylop extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnDoiMK;
+    private javax.swing.JButton btnExport;
+    private javax.swing.JButton btnImport;
     private javax.swing.JButton btnLogout;
+    private javax.swing.JButton btnReload;
     private javax.swing.JButton btnSaveNewPass;
+    private javax.swing.JComboBox<String> classCombo;
     private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTable jsvTable;
+    private javax.swing.JLabel lableDSSV;
+    private javax.swing.JLabel lableNotify;
+    private javax.swing.JLabel notifySelectClass;
     private javax.swing.JPanel panelDoiMK;
     private javax.swing.JTextField textAgain;
     private javax.swing.JTextField textMKCu;

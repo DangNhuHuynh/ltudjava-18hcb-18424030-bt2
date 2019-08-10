@@ -41,9 +41,10 @@ Contributor(s):
 -->
 <hibernate-reverse-engineering>
   <schema-selection match-catalog="quanlysinhvien"/>
-  <table-filter match-name="account"/>
-  <table-filter match-name="lop"/>
   <table-filter match-name="thoikhoabieu"/>
-  <table-filter match-name="sinhvien"/>
   <table-filter match-name="monhoc"/>
+  <table-filter match-name="sinhvien"/>
+  <table-filter match-name="lop"/>
+  <table-filter match-name="diem"/>
+  <table-filter match-name="account"/>
 </hibernate-reverse-engineering>

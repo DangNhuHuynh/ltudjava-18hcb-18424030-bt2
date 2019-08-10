@@ -1,5 +1,5 @@
 package POJO;
-// Generated Aug 8, 2019 5:07:21 PM by Hibernate Tools 4.3.1
+// Generated Aug 10, 2019 3:04:01 PM by Hibernate Tools 4.3.1
 
 
 
@@ -9,40 +9,33 @@ package POJO;
 public class Sinhvien  implements java.io.Serializable {
 
 
-     private int mssv;
-     private Lop lop;
+     private String mssv;
      private String hoTen;
      private String gioiTinh;
-     private Integer cmnd;
+     private String cmnd;
+     private Lop lop;
 
     public Sinhvien() {
     }
 
 	
-    public Sinhvien(int mssv) {
+    public Sinhvien(String mssv) {
         this.mssv = mssv;
     }
-    public Sinhvien(int mssv, Lop lop, String hoTen, String gioiTinh, Integer cmnd) {
+    public Sinhvien(String mssv, String hoTen, String gioiTinh, String cmnd, Lop maLop) {
        this.mssv = mssv;
-       this.lop = lop;
        this.hoTen = hoTen;
        this.gioiTinh = gioiTinh;
        this.cmnd = cmnd;
+       this.lop = maLop;
     }
    
-    public int getMssv() {
+    public String getMssv() {
         return this.mssv;
     }
     
-    public void setMssv(int mssv) {
+    public void setMssv(String mssv) {
         this.mssv = mssv;
-    }
-    public Lop getLop() {
-        return this.lop;
-    }
-    
-    public void setLop(Lop lop) {
-        this.lop = lop;
     }
     public String getHoTen() {
         return this.hoTen;
@@ -58,13 +51,22 @@ public class Sinhvien  implements java.io.Serializable {
     public void setGioiTinh(String gioiTinh) {
         this.gioiTinh = gioiTinh;
     }
-    public Integer getCmnd() {
+    public String getCmnd() {
         return this.cmnd;
     }
     
-    public void setCmnd(Integer cmnd) {
+    public void setCmnd(String cmnd) {
         this.cmnd = cmnd;
     }
+
+    public Lop getLop() {
+        return lop;
+    }
+
+    public void setLop(Lop lop) {
+        this.lop = lop;
+    }
+    
 
 
 

@@ -1,5 +1,5 @@
 package POJO;
-// Generated Aug 8, 2019 5:07:21 PM by Hibernate Tools 4.3.1
+// Generated Aug 10, 2019 3:04:01 PM by Hibernate Tools 4.3.1
 
 
 
@@ -10,7 +10,6 @@ public class Thoikhoabieu  implements java.io.Serializable {
 
 
      private ThoikhoabieuId id;
-     private Lop lop;
      private Monhoc monhoc;
      private String phongHoc;
 
@@ -18,14 +17,12 @@ public class Thoikhoabieu  implements java.io.Serializable {
     }
 
 	
-    public Thoikhoabieu(ThoikhoabieuId id, Lop lop, Monhoc monhoc) {
+    public Thoikhoabieu(ThoikhoabieuId id, Monhoc monhoc) {
         this.id = id;
-        this.lop = lop;
         this.monhoc = monhoc;
     }
-    public Thoikhoabieu(ThoikhoabieuId id, Lop lop, Monhoc monhoc, String phongHoc) {
+    public Thoikhoabieu(ThoikhoabieuId id, Monhoc monhoc, String phongHoc) {
        this.id = id;
-       this.lop = lop;
        this.monhoc = monhoc;
        this.phongHoc = phongHoc;
     }
@@ -36,13 +33,6 @@ public class Thoikhoabieu  implements java.io.Serializable {
     
     public void setId(ThoikhoabieuId id) {
         this.id = id;
-    }
-    public Lop getLop() {
-        return this.lop;
-    }
-    
-    public void setLop(Lop lop) {
-        this.lop = lop;
     }
     public Monhoc getMonhoc() {
         return this.monhoc;
