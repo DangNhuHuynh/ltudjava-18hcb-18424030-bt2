@@ -13,8 +13,18 @@ import java.util.Set;
 public class Lop  implements java.io.Serializable {
 
      private String maLop;
+     private String namHoc;
+     private Namhoc namhoc;    
      private Set<Sinhvien> listSV = new HashSet<Sinhvien>(0);
 
+     public String getNamHoc() {
+        return namHoc;
+    }
+
+    public void setNamHoc(String namHoc) {
+        this.namHoc = namHoc;
+    }
+    
     public Lop() {
     }
 
@@ -38,7 +48,13 @@ public class Lop  implements java.io.Serializable {
         this.listSV = listSV;
     }
 
+    public Namhoc getNamhoc() {
+        return namhoc;
+    }
 
+    public void setNamhoc(Namhoc namhoc) {
+        this.namhoc = namhoc;
+    }
 
 
 }

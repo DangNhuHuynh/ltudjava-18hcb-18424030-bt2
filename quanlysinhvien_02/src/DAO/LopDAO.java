@@ -65,4 +65,22 @@ public class LopDAO {
         }
         return true;
     }
+    
+    public static List<Lop> layDSLopByNamHoc(int namHoc){
+        List<Lop> lop = null;
+        Session session = HibernateUtil.getSessionFactory().openSession();
+        String str = "select * from Lop lop where lop.NamHoc := namHoc";
+        Query query = session.createQuery(str);
+        query.setInteger(namHoc, namHoc);
+        lop = query.list();
+        try{
+        }catch (HibernateException ex){
+            System.err.println(ex);
+        } finally {
+            session.close();
+        }
+        
+        return lop;
+    }        
+    
 }

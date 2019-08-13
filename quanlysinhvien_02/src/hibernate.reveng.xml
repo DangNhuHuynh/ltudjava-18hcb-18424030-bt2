@@ -47,4 +47,5 @@ Contributor(s):
   <table-filter match-name="lop"/>
   <table-filter match-name="diem"/>
   <table-filter match-name="account"/>
+  <table-filter match-name="namhoc"/>
 </hibernate-reverse-engineering>

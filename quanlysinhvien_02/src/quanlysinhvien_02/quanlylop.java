@@ -7,9 +7,11 @@ package quanlysinhvien_02;
 
 import DAO.AccountDAO;
 import DAO.LopDAO;
+import DAO.NamHocDAO;
 import DAO.SinhVienDAO;
 import POJO.Account;
 import POJO.Lop;
+import POJO.Namhoc;
 import POJO.Sinhvien;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
@@ -74,6 +76,8 @@ public class quanlylop extends javax.swing.JFrame {
         notifySelectClass = new javax.swing.JLabel();
         lableNotify = new javax.swing.JLabel();
         btnExport = new javax.swing.JButton();
+        cbbNamHoc = new javax.swing.JComboBox<>();
+        jLabel3 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
@@ -237,37 +241,43 @@ public class quanlylop extends javax.swing.JFrame {
             }
         });
 
+        cbbNamHoc.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        cbbNamHoc.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        cbbNamHoc.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cbbNamHocActionPerformed(evt);
+            }
+        });
+
+        jLabel3.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
+        jLabel3.setText("Năm học:");
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addGap(116, 116, 116)
-                .addComponent(panelDoiMK, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(btnLogout)
-                    .addComponent(btnDoiMK, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(24, 24, 24))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                                .addGroup(layout.createSequentialGroup()
-                                    .addComponent(jLabel2)
-                                    .addGap(18, 18, 18)
-                                    .addComponent(classCombo, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addGap(68, 68, 68))
-                                .addGroup(layout.createSequentialGroup()
-                                    .addComponent(notifySelectClass)
-                                    .addGap(86, 86, 86)))
-                            .addComponent(btnImport, javax.swing.GroupLayout.PREFERRED_SIZE, 139, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addGap(151, 151, 151))
-                        .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                            .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 867, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addContainerGap()))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(jLabel3)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(cbbNamHoc, javax.swing.GroupLayout.PREFERRED_SIZE, 79, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(34, 34, 34)
+                                .addComponent(jLabel2)
+                                .addGap(18, 18, 18)
+                                .addComponent(classCombo, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(68, 68, 68))
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(notifySelectClass)
+                                .addGap(86, 86, 86)))
+                        .addComponent(btnImport, javax.swing.GroupLayout.PREFERRED_SIZE, 139, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(151, 151, 151))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 867, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addContainerGap())
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(lableDSSV)
                         .addGap(18, 18, 18)
@@ -277,6 +287,14 @@ public class quanlylop extends javax.swing.JFrame {
                         .addGap(18, 18, 18)
                         .addComponent(btnExport, javax.swing.GroupLayout.PREFERRED_SIZE, 122, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(41, 41, 41))))
+            .addGroup(layout.createSequentialGroup()
+                .addGap(116, 116, 116)
+                .addComponent(panelDoiMK, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(btnLogout)
+                    .addComponent(btnDoiMK, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(24, 24, 24))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -291,9 +309,14 @@ public class quanlylop extends javax.swing.JFrame {
                         .addGap(25, 25, 25)
                         .addComponent(btnDoiMK)))
                 .addGap(52, 52, 52)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(1, 1, 1)
+                        .addComponent(cbbNamHoc))
                     .addComponent(btnImport)
-                    .addComponent(jLabel2)
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(jLabel2)
+                        .addComponent(jLabel3))
                     .addComponent(classCombo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(notifySelectClass)
@@ -313,21 +336,13 @@ public class quanlylop extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void initLayout() {
-//        className.setVisible(false);
         btnExport.setVisible(false);
         panelDoiMK.setVisible(false);
         jsvTable.setVisible(false);
-        List<Lop> listLH = LopDAO.layDSLop();
-        if (listLH.size() > 0) {
-            notifySelectClass.setVisible(true);
-            lableNotify.setVisible(false);
-//            panelOption.setVisible(true);
-            addDataForComboBoxClass();
-        } else {
-            notifySelectClass.setVisible(false);
-            lableNotify.setText("Chưa Có Danh Sách Lớp!");
-//            panelOption.setVisible(false);
-        }
+        
+        notifySelectClass.setVisible(false);
+        lableNotify.setVisible(false);  
+        addDataForComboBoxYear();
     }
     
     private boolean validFormChangePass(){
@@ -395,7 +410,7 @@ public class quanlylop extends javax.swing.JFrame {
     }//GEN-LAST:event_btnReloadActionPerformed
 
     private void classComboActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_classComboActionPerformed
-        if(classCombo.getSelectedItem().toString().equals("--")){
+        if(classCombo.getSelectedItem().toString().equals("--")){            
             JOptionPane.showMessageDialog(null, "!!! Chưa Có Danh Sách Lớp");
         } else{            
             addDataForTableListSV();
@@ -406,15 +421,47 @@ public class quanlylop extends javax.swing.JFrame {
         importExportFile("Export File", EXPORT_FILE);
     }//GEN-LAST:event_btnExportActionPerformed
 
-    private void addDataForComboBoxClass(){
-        List<Lop> listLH = LopDAO.layDSLop();
+    private void cbbNamHocActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbbNamHocActionPerformed
+        // TODO add your handling code here:
+        Namhoc nh = NamHocDAO.layThongTinNamHoc(Integer.valueOf(cbbNamHoc.getSelectedItem().toString()));
+        if(nh.getLops().size() == 0){           
+            JOptionPane.showMessageDialog(null, "!!! Chưa Có Danh Sách Lớp");
+            lableNotify.setVisible(true);  
+            lableNotify.setText("Chưa Có Danh Sách Lớp!");
+        } else{            
+            addDataForComboBoxClass();
+        }
+    }//GEN-LAST:event_cbbNamHocActionPerformed
+
+    private void addDataForComboBoxYear(){
+        List<Namhoc> listNamHoc = NamHocDAO.layDSNamHoc();
         DefaultComboBoxModel cbModel = new DefaultComboBoxModel();
-        for (Lop i : listLH) {
-//            System.out.println("ma lop: " + i.getMaLop());
-        // add từng tên lớp vào comboBox
-            String name = i.getMaLop();
-            cbModel.addElement(name);
+        for(Namhoc i : listNamHoc){ 
+            int namHoc = i.getNamHoc();
+            cbModel.addElement(namHoc);
         }          
+        cbbNamHoc.setModel(cbModel);
+    }
+    
+    private void addDataForComboBoxClass(){
+        String value = getYearInComboBox();
+        DefaultComboBoxModel cbModel = new DefaultComboBoxModel();
+        Namhoc nh = NamHocDAO.layThongTinNamHoc(Integer.valueOf(value));
+        
+        for(Lop i : nh.getLops()){
+            if(Integer.valueOf(value) == i.getNamhoc().getNamHoc()) {
+                lableNotify.setVisible(false); 
+                notifySelectClass.setVisible(true);
+                cbModel.removeAllElements();
+                String name = i.getMaLop();
+                cbModel.addElement(name);
+            } else {
+                lableNotify.setVisible(true);  
+                lableNotify.setText("Chưa Có Danh Sách Lớp!");
+                System.out.println("Ahii");
+            }
+           
+        }
         classCombo.setModel(cbModel);
     }
     
@@ -423,7 +470,13 @@ public class quanlylop extends javax.swing.JFrame {
         return result;
     }
     
-    private void addDataForTableListSV(){  
+    public String getYearInComboBox(){
+        String result = cbbNamHoc.getSelectedItem().toString();
+        return result;
+    }
+    
+    
+    private void addDataForTableListSV(){
         jsvTable.setVisible(true);
         String select = getClassNameInComboBox();
 //        System.out.println("Select: " + select);
@@ -615,9 +668,11 @@ public class quanlylop extends javax.swing.JFrame {
     private javax.swing.JButton btnLogout;
     private javax.swing.JButton btnReload;
     private javax.swing.JButton btnSaveNewPass;
+    private javax.swing.JComboBox<String> cbbNamHoc;
     private javax.swing.JComboBox<String> classCombo;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
