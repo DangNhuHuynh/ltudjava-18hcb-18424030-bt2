@@ -8,9 +8,6 @@
             <column name="MaLop" length="10" />
             <generator class="assigned" />
         </id>
-        <property name="namHoc" type="string">
-            <column name="NamHoc" length="5" />
-        </property>
         <set inverse="true" name="listSV" fetch="join" lazy="false">
             <key>
                 <column length="10" name="MaLop" not-null="true"/>

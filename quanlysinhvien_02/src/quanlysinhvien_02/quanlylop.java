@@ -25,6 +25,7 @@ import javax.swing.DefaultComboBoxModel;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableModel;
 import static quanlysinhvien_02.login.account;
 /**
  *
@@ -40,6 +41,7 @@ public class quanlylop extends javax.swing.JFrame {
     private String[] columName = {
         "STT", "MSSV", "Họ Tên", "Giới Tính", "CMND"
     };
+    quanLyThoiKhoaBieu tkb;
     
     public quanlylop() {
         initComponents();
@@ -69,7 +71,6 @@ public class quanlylop extends javax.swing.JFrame {
         btnLogout = new javax.swing.JButton();
         btnDoiMK = new javax.swing.JButton();
         btnImport = new javax.swing.JButton();
-        btnReload = new javax.swing.JButton();
         jLabel2 = new javax.swing.JLabel();
         classCombo = new javax.swing.JComboBox<>();
         lableDSSV = new javax.swing.JLabel();
@@ -78,8 +79,23 @@ public class quanlylop extends javax.swing.JFrame {
         btnExport = new javax.swing.JButton();
         cbbNamHoc = new javax.swing.JComboBox<>();
         jLabel3 = new javax.swing.JLabel();
+        btnTKB = new javax.swing.JButton();
+        panelInfoSV = new javax.swing.JPanel();
+        jLabel7 = new javax.swing.JLabel();
+        jLabel8 = new javax.swing.JLabel();
+        jLabel9 = new javax.swing.JLabel();
+        jLabel10 = new javax.swing.JLabel();
+        textHoTen = new javax.swing.JTextField();
+        textCMND = new javax.swing.JTextField();
+        textMSSV = new javax.swing.JTextField();
+        rBtnNam = new javax.swing.JRadioButton();
+        rBtnNu = new javax.swing.JRadioButton();
+        btnUpdate = new javax.swing.JButton();
+        btnXoa = new javax.swing.JButton();
+        btnSave = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+        setTitle("Giáo Vụ");
 
         jScrollPane1.setAutoscrolls(true);
 
@@ -97,6 +113,11 @@ public class quanlylop extends javax.swing.JFrame {
         jsvTable.setAutoscrolls(false);
         jsvTable.setColumnSelectionAllowed(true);
         jsvTable.setFocusable(false);
+        jsvTable.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jsvTableMouseClicked(evt);
+            }
+        });
         jScrollPane1.setViewportView(jsvTable);
 
         panelDoiMK.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 153, 153)));
@@ -201,14 +222,6 @@ public class quanlylop extends javax.swing.JFrame {
             }
         });
 
-        btnReload.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
-        btnReload.setText("Reload");
-        btnReload.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnReloadActionPerformed(evt);
-            }
-        });
-
         jLabel2.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
         jLabel2.setText("Danh Sách Lớp:");
 
@@ -232,7 +245,7 @@ public class quanlylop extends javax.swing.JFrame {
         lableNotify.setForeground(new java.awt.Color(255, 0, 0));
         lableNotify.setText("jLabel3");
 
-        btnExport.setBackground(new java.awt.Color(153, 204, 255));
+        btnExport.setBackground(new java.awt.Color(204, 204, 204));
         btnExport.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
         btnExport.setText("Export");
         btnExport.addActionListener(new java.awt.event.ActionListener() {
@@ -252,41 +265,163 @@ public class quanlylop extends javax.swing.JFrame {
         jLabel3.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
         jLabel3.setText("Năm học:");
 
+        btnTKB.setBackground(new java.awt.Color(153, 204, 255));
+        btnTKB.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        btnTKB.setText("Xem TKB");
+        btnTKB.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnTKBActionPerformed(evt);
+            }
+        });
+
+        panelInfoSV.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 153, 153)));
+
+        jLabel7.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        jLabel7.setText("MSSV:");
+
+        jLabel8.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        jLabel8.setText("Họ Tên:");
+
+        jLabel9.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        jLabel9.setText("Giới Tính:");
+
+        jLabel10.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        jLabel10.setText("CMND:");
+
+        textHoTen.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+
+        textCMND.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+
+        textMSSV.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+
+        rBtnNam.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        rBtnNam.setText("Nam");
+
+        rBtnNu.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        rBtnNu.setText("Nữ");
+
+        btnUpdate.setBackground(new java.awt.Color(153, 204, 255));
+        btnUpdate.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        btnUpdate.setText("Sửa");
+        btnUpdate.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnUpdateActionPerformed(evt);
+            }
+        });
+
+        btnXoa.setBackground(new java.awt.Color(204, 204, 204));
+        btnXoa.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        btnXoa.setText("Xóa");
+        btnXoa.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnXoaActionPerformed(evt);
+            }
+        });
+
+        btnSave.setBackground(new java.awt.Color(153, 204, 255));
+        btnSave.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        btnSave.setText("Thêm");
+        btnSave.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnSaveActionPerformed(evt);
+            }
+        });
+
+        javax.swing.GroupLayout panelInfoSVLayout = new javax.swing.GroupLayout(panelInfoSV);
+        panelInfoSV.setLayout(panelInfoSVLayout);
+        panelInfoSVLayout.setHorizontalGroup(
+            panelInfoSVLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(panelInfoSVLayout.createSequentialGroup()
+                .addContainerGap(23, Short.MAX_VALUE)
+                .addGroup(panelInfoSVLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addGroup(panelInfoSVLayout.createSequentialGroup()
+                        .addGroup(panelInfoSVLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel8, javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(jLabel7, javax.swing.GroupLayout.Alignment.TRAILING))
+                        .addGap(18, 18, 18)
+                        .addGroup(panelInfoSVLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(textHoTen, javax.swing.GroupLayout.PREFERRED_SIZE, 241, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(textMSSV, javax.swing.GroupLayout.PREFERRED_SIZE, 152, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(18, 18, 18)
+                        .addGroup(panelInfoSVLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addGroup(panelInfoSVLayout.createSequentialGroup()
+                                .addComponent(jLabel9)
+                                .addGap(18, 18, 18)
+                                .addComponent(rBtnNam)
+                                .addGap(37, 37, 37)
+                                .addComponent(rBtnNu))
+                            .addGroup(panelInfoSVLayout.createSequentialGroup()
+                                .addGap(15, 15, 15)
+                                .addComponent(jLabel10)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(textCMND, javax.swing.GroupLayout.PREFERRED_SIZE, 169, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                    .addGroup(panelInfoSVLayout.createSequentialGroup()
+                        .addComponent(btnSave, javax.swing.GroupLayout.PREFERRED_SIZE, 83, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(46, 46, 46)
+                        .addComponent(btnUpdate, javax.swing.GroupLayout.PREFERRED_SIZE, 83, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(31, 31, 31)
+                        .addComponent(btnXoa, javax.swing.GroupLayout.PREFERRED_SIZE, 83, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addGap(33, 46, Short.MAX_VALUE))
+        );
+        panelInfoSVLayout.setVerticalGroup(
+            panelInfoSVLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(panelInfoSVLayout.createSequentialGroup()
+                .addGap(31, 31, 31)
+                .addGroup(panelInfoSVLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel7)
+                    .addComponent(jLabel9)
+                    .addComponent(textMSSV, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(rBtnNam)
+                    .addComponent(rBtnNu))
+                .addGap(21, 21, 21)
+                .addGroup(panelInfoSVLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(textHoTen, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel8)
+                    .addComponent(textCMND, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel10))
+                .addGap(18, 18, 18)
+                .addGroup(panelInfoSVLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(btnUpdate)
+                    .addComponent(btnXoa)
+                    .addComponent(btnSave))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(notifySelectClass)
+                .addGap(336, 336, 336))
+            .addGroup(layout.createSequentialGroup()
+                .addContainerGap(35, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(jLabel3)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(cbbNamHoc, javax.swing.GroupLayout.PREFERRED_SIZE, 79, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(34, 34, 34)
-                                .addComponent(jLabel2)
-                                .addGap(18, 18, 18)
-                                .addComponent(classCombo, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(68, 68, 68))
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(notifySelectClass)
-                                .addGap(86, 86, 86)))
-                        .addComponent(btnImport, javax.swing.GroupLayout.PREFERRED_SIZE, 139, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(151, 151, 151))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addGap(0, 0, Short.MAX_VALUE)
+                        .addComponent(jLabel3)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(cbbNamHoc, javax.swing.GroupLayout.PREFERRED_SIZE, 79, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(37, 37, 37)
+                        .addComponent(jLabel2)
+                        .addGap(18, 18, 18)
+                        .addComponent(classCombo, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(39, 39, 39)
+                        .addComponent(btnImport, javax.swing.GroupLayout.PREFERRED_SIZE, 114, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(139, 139, 139))
+                    .addGroup(layout.createSequentialGroup()
                         .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 867, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addContainerGap())
+                        .addContainerGap(35, Short.MAX_VALUE))
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(lableDSSV)
                         .addGap(18, 18, 18)
-                        .addComponent(lableNotify, javax.swing.GroupLayout.PREFERRED_SIZE, 261, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(btnReload, javax.swing.GroupLayout.PREFERRED_SIZE, 134, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(18, 18, 18)
+                        .addComponent(lableNotify, javax.swing.GroupLayout.PREFERRED_SIZE, 376, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(147, 147, 147)
+                        .addComponent(btnTKB, javax.swing.GroupLayout.PREFERRED_SIZE, 116, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(btnExport, javax.swing.GroupLayout.PREFERRED_SIZE, 122, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(41, 41, 41))))
+                        .addGap(0, 0, Short.MAX_VALUE))))
             .addGroup(layout.createSequentialGroup()
                 .addGap(116, 116, 116)
                 .addComponent(panelDoiMK, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -295,6 +430,10 @@ public class quanlylop extends javax.swing.JFrame {
                     .addComponent(btnLogout)
                     .addComponent(btnDoiMK, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(24, 24, 24))
+            .addGroup(layout.createSequentialGroup()
+                .addGap(138, 138, 138)
+                .addComponent(panelInfoSV, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -308,24 +447,27 @@ public class quanlylop extends javax.swing.JFrame {
                         .addComponent(btnLogout)
                         .addGap(25, 25, 25)
                         .addComponent(btnDoiMK)))
-                .addGap(52, 52, 52)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(1, 1, 1)
-                        .addComponent(cbbNamHoc))
-                    .addComponent(btnImport)
+                .addGap(55, 55, 55)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel2)
                     .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                        .addComponent(jLabel2)
-                        .addComponent(jLabel3))
-                    .addComponent(classCombo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(classCombo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(btnImport))
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                        .addGroup(layout.createSequentialGroup()
+                            .addGap(1, 1, 1)
+                            .addComponent(cbbNamHoc, javax.swing.GroupLayout.DEFAULT_SIZE, 27, Short.MAX_VALUE))
+                        .addComponent(jLabel3)))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(notifySelectClass)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 75, Short.MAX_VALUE)
+                .addGap(18, 18, 18)
+                .addComponent(panelInfoSV, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 34, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(lableDSSV)
                     .addComponent(lableNotify)
                     .addComponent(btnExport)
-                    .addComponent(btnReload))
+                    .addComponent(btnTKB, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 188, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
@@ -342,6 +484,8 @@ public class quanlylop extends javax.swing.JFrame {
         
         notifySelectClass.setVisible(false);
         lableNotify.setVisible(false);  
+        
+        panelInfoSV.setVisible(false);
         addDataForComboBoxYear();
     }
     
@@ -405,14 +549,16 @@ public class quanlylop extends javax.swing.JFrame {
         importExportFile("Choose file import", IMPORT_FILE);
     }//GEN-LAST:event_btnImportActionPerformed
 
-    private void btnReloadActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnReloadActionPerformed
-        addDataForTableListSV();
-    }//GEN-LAST:event_btnReloadActionPerformed
-
     private void classComboActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_classComboActionPerformed
         if(classCombo.getSelectedItem().toString().equals("--")){            
             JOptionPane.showMessageDialog(null, "!!! Chưa Có Danh Sách Lớp");
-        } else{            
+        } else{           
+            panelInfoSV.setVisible(true);                        
+            textMSSV.setText("");
+            textHoTen.setText("");
+            textCMND.setText("");
+            rBtnNam.setSelected(false);
+            rBtnNu.setSelected(false);
             addDataForTableListSV();
         }
     }//GEN-LAST:event_classComboActionPerformed
@@ -424,15 +570,159 @@ public class quanlylop extends javax.swing.JFrame {
     private void cbbNamHocActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbbNamHocActionPerformed
         // TODO add your handling code here:
         Namhoc nh = NamHocDAO.layThongTinNamHoc(Integer.valueOf(cbbNamHoc.getSelectedItem().toString()));
-        if(nh.getLops().size() == 0){           
-            JOptionPane.showMessageDialog(null, "!!! Chưa Có Danh Sách Lớp");
-            lableNotify.setVisible(true);  
-            lableNotify.setText("Chưa Có Danh Sách Lớp!");
+        DefaultComboBoxModel cbModel = new DefaultComboBoxModel();
+        if(nh.getLops().size() > 0){   
+//            System.out.println("size: " + nh.getLops().size());
+            addDataForComboBoxClass();            
         } else{            
-            addDataForComboBoxClass();
+            classCombo.setModel(cbModel);
+            JOptionPane.showMessageDialog(null, "!!! Chưa Có Danh Sách Lớp");
+            lableNotify.setVisible(true); 
+            lableNotify.setText("Chưa Có Danh Sách Lớp!");
         }
     }//GEN-LAST:event_cbbNamHocActionPerformed
 
+    private void btnTKBActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnTKBActionPerformed
+        // TODO add your handling code here:
+        String nameClass = getClassNameInComboBox();
+        if(!(nameClass.equals("--"))){
+            tkb = new quanLyThoiKhoaBieu(nameClass);
+            tkb.setVisible(true);
+            this.setVisible(false);
+        }
+        else{
+            JOptionPane.showMessageDialog(null, "!!! Vui Lòng Chọn Lớp");
+        }
+    }//GEN-LAST:event_btnTKBActionPerformed
+
+    private void jsvTableMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jsvTableMouseClicked
+        // TODO add your handling code here:
+        int index = jsvTable.getSelectedRow();
+        TableModel md = jsvTable.getModel();
+        if(index >= 0){
+            String mssv = md.getValueAt(index, 1).toString();
+            String hoTen = md.getValueAt(index, 2).toString();
+            String gioiTinh = md.getValueAt(index, 3).toString();
+            String cmnd = md.getValueAt(index, 4).toString();
+
+            textMSSV.setText(mssv);
+            textHoTen.setText(hoTen);
+            textCMND.setText(cmnd);
+            if (!gioiTinh.equals("Nam")){
+                rBtnNu.setSelected(true);
+                rBtnNam.setSelected(false);
+            } else{
+                rBtnNu.setSelected(false);                
+                rBtnNam.setSelected(true);
+            }
+        }
+    }//GEN-LAST:event_jsvTableMouseClicked
+
+    private void btnSaveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSaveActionPerformed
+        // TODO add your handling code here:        
+        String mssv = textMSSV.getText();
+        String hoTen = textHoTen.getText();
+        String cmnd = textCMND.getText();  
+        String gt = "";
+        if(rBtnNam.isSelected()){
+            gt = "Nam";
+        } else {
+            gt = "Nữ";
+        }
+        
+        boolean isCheck = validCheck();
+        if(!isCheck){            
+            Lop lop = LopDAO.layThongTinLop(getClassNameInComboBox());            
+            Sinhvien sv = new Sinhvien(mssv, hoTen, gt, cmnd, lop);
+            int stt = lop.getListSV().size()+1;
+            if (mssv.equals("") || hoTen.equals("") || cmnd.equals("") || rBtnNam.isSelected() == false && rBtnNu.isSelected() == false) {
+                JOptionPane.showMessageDialog(null,"Thông Tin Không Đầy Đủ!!");
+            } else {
+                DefaultTableModel model = (DefaultTableModel) jsvTable.getModel();
+                model.addRow(new Object[]{stt,mssv, hoTen, gt, cmnd});                
+                SinhVienDAO.themSV(sv);                
+                JOptionPane.showMessageDialog(null, "Thêm Sinh Viên Thành Công :)");
+                textMSSV.setText("");
+                textHoTen.setText("");
+                textCMND.setText("");
+                rBtnNam.setSelected(false);
+                rBtnNu.setSelected(false);
+            }
+        }
+    }//GEN-LAST:event_btnSaveActionPerformed
+
+    private void btnUpdateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnUpdateActionPerformed
+        // TODO add your handling code here:
+        TableModel md = jsvTable.getModel();
+        int index = jsvTable.getSelectedRow();
+        Sinhvien sv = SinhVienDAO.layThongTinSV(md.getValueAt(index, 1).toString());
+        
+        String mssv = textMSSV.getText();
+        String hoTen = textHoTen.getText();
+        String cmnd = textCMND.getText();  
+        String gt = "";
+        if(rBtnNam.isSelected()){
+            gt = "Nam";
+        } else {
+            gt = "Nữ";
+        }
+        
+        if(mssv.equals("") || hoTen.equals("") || cmnd.equals("") || rBtnNam.isSelected() == false && rBtnNu.isSelected() == false) {
+            JOptionPane.showMessageDialog(null,"Thông Tin Không Đầy Đủ!!");
+        } else {
+            if(sv != null) {
+                sv.setMssv(mssv);
+                sv.setHoTen(hoTen);
+                sv.setGioiTinh(gt);
+                sv.setCmnd(cmnd);        
+                
+                boolean result = SinhVienDAO.updateSV(sv);
+                if(result == true){
+                    md.setValueAt(mssv, index, 1);
+                    md.setValueAt(hoTen, index, 2);
+                    md.setValueAt(gt, index, 3);
+                    md.setValueAt(cmnd, index, 4);                    
+                    JOptionPane.showMessageDialog(null, "!!! Cập Nhật Thành Công");
+                } else{
+                    JOptionPane.showMessageDialog(null, "!!! Cập Nhật Thất Bại");
+                }                
+            }
+        }
+    }//GEN-LAST:event_btnUpdateActionPerformed
+
+    private void btnXoaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnXoaActionPerformed
+        // TODO add your handling code here:
+        boolean result = SinhVienDAO.xoaSV(textMSSV.getText());
+        if(result == true){
+            DefaultTableModel model = (DefaultTableModel) jsvTable.getModel();
+            int index = jsvTable.getSelectedRow();
+            model.removeRow(index);
+                    
+            textMSSV.setText("");
+            textHoTen.setText("");
+            textCMND.setText("");
+            rBtnNam.setSelected(false);
+            rBtnNu.setSelected(false);
+            JOptionPane.showMessageDialog(null, "!!! Xóa Thành Công");
+        } else{
+            JOptionPane.showMessageDialog(null, "!!! Xóa Thất Bại");
+        }
+    }//GEN-LAST:event_btnXoaActionPerformed
+
+    private boolean validCheck(){
+        boolean isValid = false;        
+        String mssv = textMSSV.getText();
+        System.out.println(mssv);
+        Lop lop = LopDAO.layThongTinLop(getClassNameInComboBox());
+        for (Sinhvien sv : lop.getListSV()) {
+            if (sv.isExistsMSSV(mssv)) {
+                JOptionPane.showMessageDialog(null,"MSSV đã tồn tại.");
+                isValid = true;
+            }
+        }
+        return isValid;  
+    }
+    
     private void addDataForComboBoxYear(){
         List<Namhoc> listNamHoc = NamHocDAO.layDSNamHoc();
         DefaultComboBoxModel cbModel = new DefaultComboBoxModel();
@@ -452,17 +742,15 @@ public class quanlylop extends javax.swing.JFrame {
             if(Integer.valueOf(value) == i.getNamhoc().getNamHoc()) {
                 lableNotify.setVisible(false); 
                 notifySelectClass.setVisible(true);
-                cbModel.removeAllElements();
                 String name = i.getMaLop();
                 cbModel.addElement(name);
-            } else {
+            } else { 
+                notifySelectClass.setVisible(false);
                 lableNotify.setVisible(true);  
                 lableNotify.setText("Chưa Có Danh Sách Lớp!");
-                System.out.println("Ahii");
             }
-           
         }
-        classCombo.setModel(cbModel);
+        classCombo.setModel(cbModel);        
     }
     
     public String getClassNameInComboBox(){
@@ -549,17 +837,24 @@ public class quanlylop extends javax.swing.JFrame {
 //                String maLop = tenLop[0].replaceAll("\\?", "");
                 Lop lop = LopDAO.layThongTinLop(tenLop[0]);
                 
+                Namhoc nh = NamHocDAO.layThongTinNamHoc(Integer.valueOf(getYearInComboBox()));
+//                System.out.println(Integer.parseInt(tenLop[1]));
+
                 boolean checkLopHoc = true;
-                if(lop == null) {
-                    checkLopHoc = false;
-//                System.out.println(tenLop[0]);
-                    lop = new Lop();
-                    lop.setMaLop(tenLop[0]);
-                } 
-                if(checkLopHoc != true){ 
+                if(nh.getNamHoc() == Integer.parseInt(tenLop[1])) {
+                    if(lop == null) {
+                        checkLopHoc = false;
+                        lop = new Lop();
+                        lop.setMaLop(tenLop[0]);
+                        lop.setNamhoc(nh);
+                    }
+                } else {
+                    JOptionPane.showMessageDialog(null, "Import Danh Sách Không Đúng Năm Học!!!!");
+                }
+                if(checkLopHoc != true ){ 
                     boolean kq = LopDAO.themLop(lop);
                     if(kq == true){
-//                        System.out.println("Thêm Thành công");
+                        System.out.println("Thêm Thành công");
                         while ((line = buffer.readLine()) != null) {                     
                             String[] info = line.split(",");
                             Sinhvien sv = new Sinhvien(info[1], info[2], info[3], info[4], lop);
@@ -666,24 +961,37 @@ public class quanlylop extends javax.swing.JFrame {
     private javax.swing.JButton btnExport;
     private javax.swing.JButton btnImport;
     private javax.swing.JButton btnLogout;
-    private javax.swing.JButton btnReload;
+    private javax.swing.JButton btnSave;
     private javax.swing.JButton btnSaveNewPass;
+    private javax.swing.JButton btnTKB;
+    private javax.swing.JButton btnUpdate;
+    private javax.swing.JButton btnXoa;
     private javax.swing.JComboBox<String> cbbNamHoc;
     private javax.swing.JComboBox<String> classCombo;
     private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
+    private javax.swing.JLabel jLabel7;
+    private javax.swing.JLabel jLabel8;
+    private javax.swing.JLabel jLabel9;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTable jsvTable;
     private javax.swing.JLabel lableDSSV;
     private javax.swing.JLabel lableNotify;
     private javax.swing.JLabel notifySelectClass;
     private javax.swing.JPanel panelDoiMK;
+    private javax.swing.JPanel panelInfoSV;
+    private javax.swing.JRadioButton rBtnNam;
+    private javax.swing.JRadioButton rBtnNu;
     private javax.swing.JTextField textAgain;
+    private javax.swing.JTextField textCMND;
+    private javax.swing.JTextField textHoTen;
     private javax.swing.JTextField textMKCu;
     private javax.swing.JTextField textMKMoi;
+    private javax.swing.JTextField textMSSV;
     // End of variables declaration//GEN-END:variables
 }

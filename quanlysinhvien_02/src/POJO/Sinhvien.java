@@ -67,8 +67,15 @@ public class Sinhvien  implements java.io.Serializable {
         this.lop = lop;
     }
     
-
-
+    public boolean isExistsMSSV(String mssv) {
+        boolean result = false;
+        
+        if(this.mssv.equalsIgnoreCase(mssv)) {
+            result = true;
+        }
+        
+        return result;
+    }
 
 
 }

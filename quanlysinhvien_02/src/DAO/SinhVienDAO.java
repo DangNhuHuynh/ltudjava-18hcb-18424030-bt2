@@ -82,4 +82,43 @@ public class SinhVienDAO {
         }
 //        return true;
     }
+    
+    public static boolean updateSV(Sinhvien sv) {
+        Session session = new HibernateUtil().getSessionFactory().openSession();
+        if(SinhVienDAO.layThongTinSV(sv.getMssv()) == null){
+            return false;
+        } 
+        Transaction trans = null;
+        try {
+            trans = session.beginTransaction();
+            session.update(sv);
+            trans.commit();
+        }catch (HibernateException ex){
+            trans.rollback();
+            System.err.println(ex);
+        } finally {
+            session.close();
+        }
+        return true;
+    }
+    
+    public static boolean xoaSV(String mssv) {
+        Session session = new HibernateUtil().getSessionFactory().openSession();
+        Sinhvien sv = SinhVienDAO.layThongTinSV(mssv);
+        if(sv == null){
+            return false;
+        } 
+        Transaction trans = null;
+        try {
+            trans = session.beginTransaction();
+            session.delete(sv);
+            trans.commit();
+        }catch (HibernateException ex){
+            trans.rollback();
+            System.err.println(ex);
+        } finally {
+            session.close();
+        }
+        return true;
+    }
 }
