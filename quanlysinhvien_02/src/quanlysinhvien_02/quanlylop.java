@@ -41,13 +41,23 @@ public class quanlylop extends javax.swing.JFrame {
     private String[] columName = {
         "STT", "MSSV", "Họ Tên", "Giới Tính", "CMND"
     };
+     private String className = "";
     quanLyThoiKhoaBieu tkb;
     
     public quanlylop() {
         initComponents();
-        initLayout();
+        this.initLayout();
     }
 
+    public quanlylop(String _classname, quanLyThoiKhoaBieu _tkb) {
+        this.className = _classname;
+        this.tkb = _tkb;
+        initComponents();
+        initLayout();
+        this.tkb.setVisible(false);
+        
+    }
+    
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -95,7 +105,7 @@ public class quanlylop extends javax.swing.JFrame {
         btnSave = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
-        setTitle("Giáo Vụ");
+        setTitle("Giáo Vụ Quản Lý");
 
         jScrollPane1.setAutoscrolls(true);
 
@@ -586,7 +596,7 @@ public class quanlylop extends javax.swing.JFrame {
         // TODO add your handling code here:
         String nameClass = getClassNameInComboBox();
         if(!(nameClass.equals("--"))){
-            tkb = new quanLyThoiKhoaBieu(nameClass);
+            tkb = new quanLyThoiKhoaBieu(nameClass, this);
             tkb.setVisible(true);
             this.setVisible(false);
         }

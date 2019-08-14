@@ -20,10 +20,11 @@ public class SinhVienDAO {
     public static List<Sinhvien> layDSSV(){
         List<Sinhvien> list = null;
         Session session = new HibernateUtil().getSessionFactory().openSession();
+        try{
             String str = "select sv from Sinhvien sv";
             Query query = session.createQuery(str);
             list = query.list();
-        try{
+        
         }catch (HibernateException ex){
             System.err.println(ex);            
             
@@ -36,11 +37,12 @@ public class SinhVienDAO {
     public static List<Sinhvien> layDSSVTheoLop(String maLop){
         List<Sinhvien> list = null;
         Session session = new HibernateUtil().getSessionFactory().openSession();
+            
+        try{
             String str = "select * from Sinhvien sv where sv.MaLop := maLop";
             Query query = session.createQuery(str);
             query.setString("maLop", maLop);
             list = query.list();
-        try{
         }catch (HibernateException ex){
             System.err.println(ex);            
             

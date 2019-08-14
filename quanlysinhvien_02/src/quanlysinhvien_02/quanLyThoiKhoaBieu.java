@@ -5,6 +5,13 @@
  */
 package quanlysinhvien_02;
 
+import DAO.MonHocDAO;
+import DAO.ThoiKhoaBieuDAO;
+import POJO.Monhoc;
+import POJO.Thoikhoabieu;
+import java.util.*;
+import javax.swing.table.DefaultTableModel;
+
 /**
  *
  * @author Gogojungle
@@ -15,18 +22,24 @@ public class quanLyThoiKhoaBieu extends javax.swing.JFrame {
      * Creates new form quanLyThoiKhoaBieu
      */
     private String className = "";
+    private String[] columnNames = {
+        "STT", "Mã môn", "Tên môn", "Phòng học"
+    };
     quanlylop qlLop;
     
     public quanLyThoiKhoaBieu() {
         initComponents();
+        initLayout();
     }
 
-    public quanLyThoiKhoaBieu(String className){
-        this.className = className;
+    public quanLyThoiKhoaBieu(String _className, quanlylop _qlLop) {
+        this.className = _className;
+        this.qlLop = _qlLop;
         initComponents();
-//        initLayout();
-//        ql.setVisible(true);    
+        initLayout();
+        this.qlLop.setVisible(false);
     }
+    
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -40,10 +53,13 @@ public class quanLyThoiKhoaBieu extends javax.swing.JFrame {
         jScrollPane1 = new javax.swing.JScrollPane();
         tableTKB = new javax.swing.JTable();
         jButton1 = new javax.swing.JButton();
+        notify = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+        setTitle("Giáo Vụ Quản Lý");
 
         lableTKB.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
+        lableTKB.setForeground(new java.awt.Color(0, 153, 153));
         lableTKB.setText("TKB");
 
         tableTKB.setModel(new javax.swing.table.DefaultTableModel(
@@ -69,6 +85,10 @@ public class quanLyThoiKhoaBieu extends javax.swing.JFrame {
             }
         });
 
+        notify.setFont(new java.awt.Font("Tahoma", 2, 18)); // NOI18N
+        notify.setForeground(new java.awt.Color(255, 51, 0));
+        notify.setText("Chưa Có Thời Khóa Biểu!");
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -82,7 +102,9 @@ public class quanLyThoiKhoaBieu extends javax.swing.JFrame {
                                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 990, javax.swing.GroupLayout.PREFERRED_SIZE))
                             .addGroup(layout.createSequentialGroup()
                                 .addGap(54, 54, 54)
-                                .addComponent(lableTKB)))
+                                .addComponent(lableTKB)
+                                .addGap(33, 33, 33)
+                                .addComponent(notify, javax.swing.GroupLayout.PREFERRED_SIZE, 213, javax.swing.GroupLayout.PREFERRED_SIZE)))
                         .addGap(0, 59, Short.MAX_VALUE))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                         .addGap(0, 0, Short.MAX_VALUE)
@@ -95,7 +117,9 @@ public class quanLyThoiKhoaBieu extends javax.swing.JFrame {
                 .addContainerGap()
                 .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 377, Short.MAX_VALUE)
-                .addComponent(lableTKB)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(lableTKB)
+                    .addComponent(notify))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 123, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(24, 24, 24))
@@ -106,10 +130,9 @@ public class quanLyThoiKhoaBieu extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        // TODO add your handling code here:
-//       this.qlLop.setVisible(true);
-       this.dispose();
+        // TODO add your handling code here:        
        this.qlLop.setVisible(true);
+       this.dispose();     
     }//GEN-LAST:event_jButton1ActionPerformed
 
     /**
@@ -151,6 +174,39 @@ public class quanLyThoiKhoaBieu extends javax.swing.JFrame {
     private javax.swing.JButton jButton1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JLabel lableTKB;
+    private javax.swing.JLabel notify;
     private javax.swing.JTable tableTKB;
     // End of variables declaration//GEN-END:variables
+
+    private void initLayout() {
+        List<Thoikhoabieu> list = ThoiKhoaBieuDAO.layDSTKB();
+        showTKBOnTable();
+    }
+    
+    private void showTKBOnTable(){
+        notify.setVisible(false);
+        DefaultTableModel table = new DefaultTableModel();
+        table.setColumnIdentifiers(columnNames);
+        lableTKB.setText("Thời Khóa Biểu " + className);
+        List<Thoikhoabieu> tkb_lop = ThoiKhoaBieuDAO.layTKBByLop(className.replaceAll("\\?", ""));
+        if(tkb_lop.size() > 0){
+            int stt = 1;
+            for(Thoikhoabieu i : tkb_lop){                
+                Monhoc monHoc = MonHocDAO.laỵThongTinMonHoc(i.getId().getMaMh());
+                
+                String[] item = new String[4];
+                item[0] = String.valueOf(stt);
+                item[1] = i.getId().getMaMh();
+                item[2] = monHoc.getTenMh();
+                item[3] = i.getPhongHoc();
+                
+                table.addRow(item);
+                stt++;
+            }
+            tableTKB.setModel(table);
+        } else {
+            notify.setVisible(true);
+            tableTKB.setModel(table);
+        }
+    }
 }

@@ -18,7 +18,7 @@ public class Quanlysinhvien_02 {
         // TODO code application logic here
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new quanlylop().setVisible(true);
+                new login().setVisible(true);
             }
         });
     }
