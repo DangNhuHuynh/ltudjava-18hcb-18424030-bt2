@@ -9,7 +9,13 @@ import DAO.MonHocDAO;
 import DAO.ThoiKhoaBieuDAO;
 import POJO.Monhoc;
 import POJO.Thoikhoabieu;
+import POJO.ThoikhoabieuId;
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileReader;
 import java.util.*;
+import javax.swing.JFileChooser;
+import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 
 /**
@@ -20,13 +26,17 @@ public class quanLyThoiKhoaBieu extends javax.swing.JFrame {
 
     /**
      * Creates new form quanLyThoiKhoaBieu
-     */
-    private String className = "";
+     */    
+    private String className = "";    
     private String[] columnNames = {
         "STT", "Mã môn", "Tên môn", "Phòng học"
     };
+    private String[] columnTKBLop = {
+        "STT", "Mã Môn", "Tên Môn", "Học Kì"
+    };    
+    private final int IMPORT_FILE = 1;
     quanlylop qlLop;
-    
+            
     public quanLyThoiKhoaBieu() {
         initComponents();
         initLayout();
@@ -54,6 +64,9 @@ public class quanLyThoiKhoaBieu extends javax.swing.JFrame {
         tableTKB = new javax.swing.JTable();
         jButton1 = new javax.swing.JButton();
         notify = new javax.swing.JLabel();
+        comboHocKi = new javax.swing.JComboBox<>();
+        jLabel1 = new javax.swing.JLabel();
+        btnImportTKB = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Giáo Vụ Quản Lý");
@@ -89,6 +102,25 @@ public class quanLyThoiKhoaBieu extends javax.swing.JFrame {
         notify.setForeground(new java.awt.Color(255, 51, 0));
         notify.setText("Chưa Có Thời Khóa Biểu!");
 
+        comboHocKi.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        comboHocKi.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "ALL", "HKI", "HKII", "HKIII" }));
+        comboHocKi.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                comboHocKiActionPerformed(evt);
+            }
+        });
+
+        jLabel1.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        jLabel1.setText("Học Kì:");
+
+        btnImportTKB.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        btnImportTKB.setText("Import TKB");
+        btnImportTKB.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnImportTKBActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -96,30 +128,42 @@ public class quanLyThoiKhoaBieu extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(layout.createSequentialGroup()
-                                .addGap(46, 46, 46)
-                                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 990, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGroup(layout.createSequentialGroup()
-                                .addGap(54, 54, 54)
-                                .addComponent(lableTKB)
-                                .addGap(33, 33, 33)
-                                .addComponent(notify, javax.swing.GroupLayout.PREFERRED_SIZE, 213, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addGap(46, 46, 46)
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 990, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(0, 59, Short.MAX_VALUE))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                         .addGap(0, 0, Short.MAX_VALUE)
-                        .addComponent(jButton1)))
+                        .addComponent(jButton1))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(54, 54, 54)
+                        .addComponent(lableTKB)
+                        .addGap(33, 33, 33)
+                        .addComponent(notify, javax.swing.GroupLayout.PREFERRED_SIZE, 213, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(btnImportTKB)
+                        .addGap(276, 276, 276)))
                 .addContainerGap())
+            .addGroup(layout.createSequentialGroup()
+                .addGap(208, 208, 208)
+                .addComponent(jLabel1)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(comboHocKi, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 377, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 259, Short.MAX_VALUE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(comboHocKi, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel1))
+                .addGap(87, 87, 87)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(lableTKB)
-                    .addComponent(notify))
+                    .addComponent(notify)
+                    .addComponent(btnImportTKB))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 123, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(24, 24, 24))
@@ -134,6 +178,30 @@ public class quanLyThoiKhoaBieu extends javax.swing.JFrame {
        this.qlLop.setVisible(true);
        this.dispose();     
     }//GEN-LAST:event_jButton1ActionPerformed
+
+    private void comboHocKiActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_comboHocKiActionPerformed
+        // TODO add your handling code here:
+        String hocKi = comboHocKi.getSelectedItem().toString();
+        if(!hocKi.equals("ALL")){
+            chiTietTKB(hocKi);
+        } else {
+            showALLTKB();
+        }
+                
+    }//GEN-LAST:event_comboHocKiActionPerformed
+
+    private void btnImportTKBActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnImportTKBActionPerformed
+        // TODO add your handling code here:
+        String hocKi = comboHocKi.getSelectedItem().toString();
+        List<Thoikhoabieu> tkb = ThoiKhoaBieuDAO.layTKBByLop_HocKi(className, hocKi);
+        if(comboHocKi.getSelectedItem().equals("ALL")){
+            JOptionPane.showMessageDialog(null, "Vui Lòng Chọn Học Kì !!!");
+        } else if(tkb.size() > 0){
+            JOptionPane.showMessageDialog(null, "Học Kì Này Đã Có Thời Khóa Biểu !!!");            
+        } else {
+            importFile("Choose file import", IMPORT_FILE);
+        }
+    }//GEN-LAST:event_btnImportTKBActionPerformed
 
     /**
      * @param args the command line arguments
@@ -171,27 +239,59 @@ public class quanLyThoiKhoaBieu extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btnImportTKB;
+    private javax.swing.JComboBox<String> comboHocKi;
     private javax.swing.JButton jButton1;
+    private javax.swing.JLabel jLabel1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JLabel lableTKB;
     private javax.swing.JLabel notify;
     private javax.swing.JTable tableTKB;
     // End of variables declaration//GEN-END:variables
 
-    private void initLayout() {
-        List<Thoikhoabieu> list = ThoiKhoaBieuDAO.layDSTKB();
-        showTKBOnTable();
+    private void initLayout() {        
+        
+        showALLTKB();
     }
     
-    private void showTKBOnTable(){
+    private void showALLTKB(){
         notify.setVisible(false);
         DefaultTableModel table = new DefaultTableModel();
-        table.setColumnIdentifiers(columnNames);
+        table.setColumnIdentifiers(columnTKBLop);
         lableTKB.setText("Thời Khóa Biểu " + className);
-        List<Thoikhoabieu> tkb_lop = ThoiKhoaBieuDAO.layTKBByLop(className.replaceAll("\\?", ""));
+        List<Thoikhoabieu> tkb_lop = ThoiKhoaBieuDAO.layTKBByLop(className);
         if(tkb_lop.size() > 0){
             int stt = 1;
-            for(Thoikhoabieu i : tkb_lop){                
+            for(Thoikhoabieu i : tkb_lop){
+                Monhoc monHoc = MonHocDAO.laỵThongTinMonHoc(i.getId().getMaMh());
+                
+                String[] item = new String[4];
+                item[0] = String.valueOf(stt);
+                item[1] = i.getId().getMaMh();
+                item[2] = monHoc.getTenMh();
+                item[3] = i.getHocKi();
+                
+                table.addRow(item);
+                stt++;
+            }
+            tableTKB.setModel(table);
+        } else {
+            notify.setVisible(true);
+            tableTKB.setModel(table);
+        }
+    }
+    
+    private void chiTietTKB(String hocKi){                
+        DefaultTableModel table = new DefaultTableModel();
+        notify.setVisible(false);
+        table.setColumnIdentifiers(columnNames);
+        hocKi = comboHocKi.getSelectedItem().toString();
+        lableTKB.setText("Thời Khóa Biểu: " + className + " - " + hocKi);
+        List<Thoikhoabieu> tkb_lop_hk = ThoiKhoaBieuDAO.layTKBByLop_HocKi(className, hocKi);
+        
+        if(tkb_lop_hk.size() > 0){
+            int stt = 1;
+            for(Thoikhoabieu i : tkb_lop_hk){
                 Monhoc monHoc = MonHocDAO.laỵThongTinMonHoc(i.getId().getMaMh());
                 
                 String[] item = new String[4];
@@ -207,6 +307,66 @@ public class quanLyThoiKhoaBieu extends javax.swing.JFrame {
         } else {
             notify.setVisible(true);
             tableTKB.setModel(table);
+        }
+    }
+    
+    private void importFile(String title, int type) {
+        JFileChooser fileChooser = new JFileChooser();
+        fileChooser.setDialogTitle(title);
+        int choose = -1;
+        switch (type) {
+            case IMPORT_FILE:
+                choose = fileChooser.showOpenDialog(null);
+                break;
+        }
+
+        if (choose == JFileChooser.APPROVE_OPTION) {
+            File f = fileChooser.getSelectedFile();
+            switch (type) {
+                case IMPORT_FILE:
+                    readFile(f);
+                    break;                
+            }
+        }
+    }
+
+    private void readFile(File file) {
+        try {
+            try (FileReader reader = new FileReader(file)) {
+                BufferedReader buffer = new BufferedReader(reader);
+
+                String line;
+                
+                line = buffer.readLine();
+                String[] title = line.split(",");
+//                String maLop = title[0];
+                String maLop = title[0];
+                String hocKi = comboHocKi.getSelectedItem().toString();
+                Thoikhoabieu tkb = new Thoikhoabieu();
+                
+                if(className.replaceAll("\\?", "").equalsIgnoreCase(maLop) || hocKi.equalsIgnoreCase(title[1])){  
+                    while ((line = buffer.readLine()) != null) {                        
+                        String[] info = line.split(",");
+                        String maMon = info[0];
+                        Monhoc monHoc = MonHocDAO.laỵThongTinMonHoc(maMon);
+                        ThoikhoabieuId id = new ThoikhoabieuId(maLop, maMon);
+                        
+                        tkb.setId(id);
+                        tkb.setMonhoc(monHoc);
+                        tkb.setPhongHoc(info[2]);
+                        tkb.setHocKi(hocKi);
+                        tkb.setTenMon(info[1]);
+                        
+                        ThoiKhoaBieuDAO.themTKB(tkb);                        
+                    }                                        
+                } else {
+                    JOptionPane.showMessageDialog(null, "Thời Khóa Biểu Sai Lớp..... ");  
+                }                
+               buffer.close();
+            } 
+            chiTietTKB(comboHocKi.getSelectedItem().toString());
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(null, "Error to open file: " + e.toString(), "Error", JOptionPane.ERROR_MESSAGE);
         }
     }
 }

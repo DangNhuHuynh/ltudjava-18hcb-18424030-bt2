@@ -12,6 +12,8 @@ public class Thoikhoabieu  implements java.io.Serializable {
      private ThoikhoabieuId id;
      private Monhoc monhoc;
      private String phongHoc;
+     private String hocKi;
+     private String tenMon;
 
     public Thoikhoabieu() {
     }
@@ -47,6 +49,22 @@ public class Thoikhoabieu  implements java.io.Serializable {
     
     public void setPhongHoc(String phongHoc) {
         this.phongHoc = phongHoc;
+    }
+
+    public String getHocKi() {
+        return hocKi;
+    }
+
+    public void setHocKi(String hocKi) {
+        this.hocKi = hocKi;
+    }
+
+    public String getTenMon() {
+        return tenMon;
+    }
+
+    public void setTenMon(String tenMon) {
+        this.tenMon = tenMon;
     }
 
 

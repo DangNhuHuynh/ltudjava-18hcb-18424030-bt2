@@ -18,5 +18,11 @@
         <property name="phongHoc" type="string">
             <column name="PhongHoc" length="10" />
         </property>
+        <property name="hocKi" type="string">
+            <column name="HocKi" length="5" />
+        </property>
+        <property name="tenMon" type="string">
+            <column name="TenMH" />
+        </property>
     </class>
 </hibernate-mapping>
