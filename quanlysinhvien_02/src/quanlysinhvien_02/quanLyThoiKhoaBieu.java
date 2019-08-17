@@ -676,6 +676,7 @@ public class quanLyThoiKhoaBieu extends javax.swing.JFrame {
     private void btnSaveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSaveActionPerformed
         // TODO add your handling code here:
         String mssv = textMSSV.getText();
+        
         String hoTen = textHoTen.getText();
         String cmnd = textCMND.getText();
         String gt = "";
@@ -685,38 +686,52 @@ public class quanLyThoiKhoaBieu extends javax.swing.JFrame {
             gt = "Nữ";
         }
 
-//        boolean isCheck = validCheck();
-//        if(!isCheck){
-            List<SvMonhoc> list = SvMonHocDAO.getList();
-            Sinhvien sv = SinhVienDAO.layThongTinSV(mssv);
-//            for(SvMonhoc i : list){
-//                List<Sinhvien> listSVMH = SvMonHocDAO.layThongTinById(i.getId());
-//                boolean rs = SvMonHocDAO.themSV(sv);
-                if(sv == null){
-                    System.out.println("Sinh Viên Không Tồn Tại...");
-                } else{
-                     System.out.println("Ahihi...");
+        Sinhvien sv = SinhVienDAO.layThongTinSV(mssv);
+        List<Sinhvien> listSV = SvMonHocDAO.layThongTinSVMH(className, comboHocKi.getSelectedItem().toString(), comboBoxMonHoc.getSelectedItem().toString());
+        List<SvMonhoc> list = SvMonHocDAO.getList();
+        
+        String maMH = comboBoxMonHoc.getSelectedItem().toString();
+        SvMonhoc svmh = new SvMonhoc(mssv, maMH, className);
+//        System.out.println("id: " + svmh.getId());
+        int stt = listSV.size()+1;
+        
+        if (mssv.equals("") || hoTen.equals("") || cmnd.equals("") 
+                || rBtnNam.isSelected() == false 
+                && rBtnNu.isSelected() == false) {
+            JOptionPane.showMessageDialog(null,"Thông Tin Không Đầy Đủ!!");
+        } else {
+            for(SvMonhoc item : list){
+                for(Sinhvien i : SvMonHocDAO.layThongTinById(item.getId())) {
+                    if(i.isExistsMSSV(mssv)){
+                        JOptionPane.showMessageDialog(null,"SV Đã Đăng Kí Môn Học Này....!!");
+                        break;
+                    } else if (sv == null){
+                        JOptionPane.showMessageDialog(null,"SV Không Tồn Tại....!!");
+                        break;
+                    } else {
+                        DefaultTableModel model = (DefaultTableModel) tableSVByMH.getModel();                    
+                        Boolean kq = SvMonHocDAO.themSV(svmh);
+
+                        if(kq == true){
+                            model.addRow(new Object[]{stt,mssv, sv.getHoTen(), sv.getGioiTinh(), sv.getCmnd()});
+                            JOptionPane.showMessageDialog(null, "Thêm Thành Công :)");
+
+                            textMSSV.setText("");
+                            textHoTen.setText("");
+                            textCMND.setText("");
+                            rBtnNam.setSelected(false);
+                            rBtnNu.setSelected(false);
+
+                        } else {
+                            JOptionPane.showMessageDialog(null, "Thêm Thất Bại :)");
+                        }                  
+                    }
+                    break;
                 }
-//            }
+                break;
+            }
             
-                    
-//            SvMonhoc sv_mh = SinhVienDAO.layThongTinLop(getClassNameInComboBox());
-//            Sinhvien sv = new Sinhvien(mssv, hoTen, gt, cmnd, lop);
-//            int stt = lop.getListSV().size()+1;
-//            if (mssv.equals("") || hoTen.equals("") || cmnd.equals("") || rBtnNam.isSelected() == false && rBtnNu.isSelected() == false) {
-//                JOptionPane.showMessageDialog(null,"Thông Tin Không Đầy Đủ!!");
-//            } else {
-//                DefaultTableModel model = (DefaultTableModel) tableSVByMH.getModel();
-//                model.addRow(new Object[]{stt,mssv, hoTen, gt, cmnd});
-//                SinhVienDAO.themSV(sv);
-//                JOptionPane.showMessageDialog(null, "Thêm Sinh Viên Thành Công :)");
-//                textMSSV.setText("");
-//                textHoTen.setText("");
-//                textCMND.setText("");
-//                rBtnNam.setSelected(false);
-//                rBtnNu.setSelected(false);
-//            }
-//        }
+        }
     }//GEN-LAST:event_btnSaveActionPerformed
 
     /**

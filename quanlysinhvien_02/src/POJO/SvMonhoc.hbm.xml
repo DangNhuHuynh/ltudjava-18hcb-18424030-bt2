@@ -45,7 +45,7 @@ Contributor(s):
 
 <hibernate-mapping>
     <class name="POJO.SvMonhoc" table="sv_monhoc" catalog="quanlysinhvien" optimistic-lock="version">
-        <id name="id" type="java.lang.Integer">
+        <id name="id" type="int">
             <column name="ID" />
             <generator class="identity" />
         </id>

@@ -28,11 +28,11 @@ public class SvMonhoc {
         
     }
     
-//    public SvMonhoc(Sinhvien sinhvien, String maMh, String maLop) {
-//       this.sinhvien = sinhvien;
-//       this.maMh = maMh;
-//       this.maLop = maLop;
-//    }
+    public SvMonhoc(String maSV, String maMh, String maLop) {
+       this.maSV = maSV;
+       this.maMh = maMh;
+       this.maLop = maLop;
+    }
     
     public int getId() {
         return id;

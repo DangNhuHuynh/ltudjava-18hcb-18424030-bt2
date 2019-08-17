@@ -11,6 +11,7 @@ import java.util.*;
 import org.hibernate.HibernateException;
 import org.hibernate.Query;
 import org.hibernate.Session;
+import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
 
 /**
@@ -90,15 +91,15 @@ public class SvMonHocDAO {
         return svmh;
     }
     
-    public static boolean themSV(Sinhvien sv){
-        Session session = new HibernateUtil().getSessionFactory().openSession();
-//        if(SinhVienDAO.layThongTinSV(sv.getMssv()) == null){
-//            return false;
-//        } 
+    public static boolean themSV(SvMonhoc svmh){
+        Session session = new HibernateUtil().getSessionFactory().openSession();;
+        if(SvMonHocDAO.layThongTin(svmh.getId()) != null){
+            return false;
+        } 
         Transaction trans = null;
         try {
             trans = session.beginTransaction();
-            session.save(sv);
+            session.save(svmh);
             trans.commit();
         }catch (HibernateException ex){
             trans.rollback();
