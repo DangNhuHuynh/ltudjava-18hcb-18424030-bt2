@@ -13,6 +13,7 @@ import POJO.Account;
 import POJO.Lop;
 import POJO.Namhoc;
 import POJO.Sinhvien;
+import POJO.SvMonhoc;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
@@ -27,6 +28,7 @@ import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableModel;
 import static quanlysinhvien_02.login.account;
+import java.util.List; 
 /**
  *
  * @author Gogojungle
@@ -496,7 +498,7 @@ public class quanlylop extends javax.swing.JFrame {
         lableNotify.setVisible(false);  
         
         panelInfoSV.setVisible(false);
-        addDataForComboBoxYear();
+        addDataForComboBoxYear();                
     }
     
     private boolean validFormChangePass(){
@@ -582,13 +584,16 @@ public class quanlylop extends javax.swing.JFrame {
         Namhoc nh = NamHocDAO.layThongTinNamHoc(Integer.valueOf(cbbNamHoc.getSelectedItem().toString()));
         DefaultComboBoxModel cbModel = new DefaultComboBoxModel();
         if(nh.getLops().size() > 0){   
-//            System.out.println("size: " + nh.getLops().size());
             addDataForComboBoxClass();            
-        } else{            
+        } else{    
+            DefaultTableModel model = new DefaultTableModel();
+            model.setColumnIdentifiers(columName);
+            jsvTable.setModel(model);            
             classCombo.setModel(cbModel);
             JOptionPane.showMessageDialog(null, "!!! Chưa Có Danh Sách Lớp");
             lableNotify.setVisible(true); 
             lableNotify.setText("Chưa Có Danh Sách Lớp!");
+            
         }
     }//GEN-LAST:event_cbbNamHocActionPerformed
 
@@ -746,6 +751,7 @@ public class quanlylop extends javax.swing.JFrame {
     private void addDataForComboBoxClass(){
         String value = getYearInComboBox();
         DefaultComboBoxModel cbModel = new DefaultComboBoxModel();
+        
         Namhoc nh = NamHocDAO.layThongTinNamHoc(Integer.valueOf(value));
         
         for(Lop i : nh.getLops()){
@@ -755,9 +761,11 @@ public class quanlylop extends javax.swing.JFrame {
                 String name = i.getMaLop();
                 cbModel.addElement(name);
             } else { 
+                DefaultTableModel model = new DefaultTableModel();
+                jsvTable.setModel(model);
                 notifySelectClass.setVisible(false);
                 lableNotify.setVisible(true);  
-                lableNotify.setText("Chưa Có Danh Sách Lớp!");
+                lableNotify.setText("Chưa Có Danh Sách Lớp!");                
             }
         }
         classCombo.setModel(cbModel);        

@@ -1,6 +1,10 @@
 package POJO;
 // Generated Aug 10, 2019 3:04:01 PM by Hibernate Tools 4.3.1
 
+import java.util.HashSet;
+import java.util.Set;
+
+
 
 
 /**
@@ -14,10 +18,9 @@ public class Sinhvien  implements java.io.Serializable {
      private String gioiTinh;
      private String cmnd;
      private Lop lop;
-
+    
     public Sinhvien() {
     }
-
 	
     public Sinhvien(String mssv) {
         this.mssv = mssv;
@@ -29,7 +32,7 @@ public class Sinhvien  implements java.io.Serializable {
        this.cmnd = cmnd;
        this.lop = maLop;
     }
-   
+    
     public String getMssv() {
         return this.mssv;
     }

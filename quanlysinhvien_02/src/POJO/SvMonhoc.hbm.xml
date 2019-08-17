@@ -1,5 +1,4 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE hibernate-configuration PUBLIC "-//Hibernate/Hibernate Configuration DTD 3.0//EN" "http://hibernate.sourceforge.net/hibernate-configuration-3.0.dtd">
 <!--
 DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS HEADER.
 
@@ -39,19 +38,30 @@ made subject to such option by the copyright holder.
 
 Contributor(s):
 -->
-<hibernate-configuration>
-  <session-factory>
-    <property name="hibernate.dialect">org.hibernate.dialect.MySQLDialect</property>
-    <property name="hibernate.connection.driver_class">com.mysql.jdbc.Driver</property>
-    <property name="hibernate.connection.url">jdbc:mysql://localhost:3306/quanlysinhvien?zeroDateTimeBehavior=convertToNull</property>
-    <property name="hibernate.connection.username">root</property>
-    <mapping class="" file="" jar="" package="" resource="POJO/Lop.hbm.xml"/>
-    <mapping resource="POJO/Diem.hbm.xml"/>
-    <mapping resource="POJO/Monhoc.hbm.xml"/>
-    <mapping resource="POJO/Account.hbm.xml"/>
-    <mapping resource="POJO/Sinhvien.hbm.xml"/>
-    <mapping resource="POJO/Thoikhoabieu.hbm.xml"/>
-    <mapping resource="POJO/Namhoc.hbm.xml"/>
-    <mapping resource="POJO/SvMonhoc.hbm.xml"/>
-  </session-factory>
-</hibernate-configuration>
+
+<!DOCTYPE hibernate-mapping PUBLIC
+  "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+  "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping>
+    <class name="POJO.SvMonhoc" table="sv_monhoc" catalog="quanlysinhvien" optimistic-lock="version">
+        <id name="id" type="java.lang.Integer">
+            <column name="ID" />
+            <generator class="identity" />
+        </id>
+<!--        <many-to-one name="sinhvien" class="POJO.Sinhvien" fetch="select">
+            <column name="MaSV" length="10" />
+        </many-to-one>        -->
+        <property name="maSV" type="string">
+            <column name="MaSV" length="10" />
+        </property>
+        <property name="maMh" type="string">
+            <column name="MaMH" length="10" />
+        </property>
+        <property name="maLop" type="string">
+            <column name="MaLop" length="10" />
+        </property>
+    </class>
+
+
+</hibernate-mapping>

@@ -48,4 +48,5 @@ Contributor(s):
   <table-filter match-name="diem"/>
   <table-filter match-name="account"/>
   <table-filter match-name="namhoc"/>
+  <table-filter match-name="sv_monhoc"/>
 </hibernate-reverse-engineering>
