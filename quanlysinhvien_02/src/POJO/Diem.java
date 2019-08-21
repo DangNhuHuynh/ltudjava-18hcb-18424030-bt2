@@ -9,57 +9,120 @@ package POJO;
 public class Diem  implements java.io.Serializable {
 
 
-     private DiemId id;
-     private Float diemGk;
-     private Float diemCk;
-     private Float diemKhac;
-
+     private int id;
+//     private String maLop;
+//     private String maMh;
+//     private String mssv;
+     private float diemGk;
+     private float diemCk;
+     private float diemKhac;
+     private int idSvmh;
+     private float diemTong;
+     private Sinhvien sv = new Sinhvien();
+     
     public Diem() {
+        this.sv = null;
+        this.diemGk = 0;
+        this.diemCk = 0;
+        this.diemKhac = 0;
+        this.diemTong = 0;
     }
 
-	
-    public Diem(DiemId id) {
-        this.id = id;
+    public  Diem(Integer idSVMH, Sinhvien _sv){
+        this.idSvmh = idSvmh;
+        this.sv = _sv;
     }
-    public Diem(DiemId id, Float diemGk, Float diemCk, Float diemKhac) {
-       this.id = id;
+    
+    public Diem( Float diemGk, Float diemCk, Float diemKhac, Float diemTong, Sinhvien _sv) {
+//       this.maLop = maLop;
+//       this.maMh = maMh;
+//       this.mssv = mssv;
        this.diemGk = diemGk;
        this.diemCk = diemCk;
        this.diemKhac = diemKhac;
+       this.diemTong = diemTong;
+       this.sv = _sv;
     }
    
-    public DiemId getId() {
+    public int getId() {
         return this.id;
     }
     
-    public void setId(DiemId id) {
+    public void setId(int id) {
         this.id = id;
     }
-    public Float getDiemGk() {
+//    public String getMaLop() {
+//        return this.maLop;
+//    }
+//    
+//    public void setMaLop(String maLop) {
+//        this.maLop = maLop;
+//    }
+//    public String getMaMh() {
+//        return this.maMh;
+//    }
+//    
+//    public void setMaMh(String maMh) {
+//        this.maMh = maMh;
+//    }
+//    public String getMssv() {
+//        return this.mssv;
+//    }
+//    
+//    public void setMssv(String mssv) {
+//        this.mssv = mssv;
+//    }
+    public float getDiemGk() {
         return this.diemGk;
     }
     
-    public void setDiemGk(Float diemGk) {
+    public void setDiemGk(float diemGk) {
         this.diemGk = diemGk;
     }
-    public Float getDiemCk() {
+    public float getDiemCk() {
         return this.diemCk;
     }
     
-    public void setDiemCk(Float diemCk) {
+    public void setDiemCk(float diemCk) {
         this.diemCk = diemCk;
     }
-    public Float getDiemKhac() {
+    public float getDiemKhac() {
         return this.diemKhac;
     }
     
-    public void setDiemKhac(Float diemKhac) {
+    public void setDiemKhac(float diemKhac) {
         this.diemKhac = diemKhac;
     }
+    public int getIdSvmh() {
+        return this.idSvmh;
+    }
+    
+    public void setIdSvmh(int idSvmh) {
+        this.idSvmh = idSvmh;
+    }
+    public float getDiemTong() {
+        return this.diemTong;
+    }
+    
+    public void setDiemTong(float diemTong) {
+        this.diemTong = diemTong;
+    }
 
+    public String xepLoai(){
+        if(this.diemTong >= 0 && this.diemTong < 5){
+            return "Rớt";
+        }
+        return "Đậu";
+    }
 
+    public Sinhvien getSv() {
+        return sv;
+    }
 
-
+    public void setSv(Sinhvien sv) {
+        this.sv = sv;
+    }
+    
 }
 
 

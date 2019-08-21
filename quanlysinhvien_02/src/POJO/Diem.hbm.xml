@@ -4,25 +4,36 @@
 <!-- Generated Aug 10, 2019 3:04:01 PM by Hibernate Tools 4.3.1 -->
 <hibernate-mapping>
     <class name="POJO.Diem" table="diem" catalog="quanlysinhvien" optimistic-lock="version">
-        <composite-id name="id" class="POJO.DiemId">
-            <key-property name="maLop" type="string">
-                <column name="MaLop" length="10" />
-            </key-property>
-            <key-property name="maMh" type="string">
-                <column name="MaMH" length="10" />
-            </key-property>
-            <key-property name="mssv" type="int">
-                <column name="MSSV" />
-            </key-property>
-        </composite-id>
-        <property name="diemGk" type="java.lang.Float">
+        <id name="id" type="int">
+            <column name="ID" />
+            <generator class="identity" />
+        </id>
+<!--        <property name="maLop" type="string">
+            <column name="MaLop" length="10" />
+        </property>
+        <property name="maMh" type="string">
+            <column name="MaMH" length="10" />
+        </property>-->
+<!--        <property name="mssv" type="string">
+            <column name="MSSV" length="10" />
+        </property>-->
+        <property name="diemGk" type="float">
             <column name="DiemGK" precision="12" scale="0" />
         </property>
-        <property name="diemCk" type="java.lang.Float">
+        <property name="diemCk" type="float">
             <column name="DiemCK" precision="12" scale="0" />
         </property>
-        <property name="diemKhac" type="java.lang.Float">
+        <property name="diemKhac" type="float">
             <column name="DiemKhac" precision="12" scale="0" />
+        </property>        
+        <property name="diemTong" type="float">
+            <column name="DiemTong" precision="12" scale="0" />
         </property>
+        <property name="idSvmh" type="int">
+            <column name="ID_SVMH" />
+        </property>
+        <many-to-one name="sv" class="POJO.Sinhvien" fetch="select">
+            <column name="mssv" not-null="true"></column>
+        </many-to-one>
     </class>
 </hibernate-mapping>

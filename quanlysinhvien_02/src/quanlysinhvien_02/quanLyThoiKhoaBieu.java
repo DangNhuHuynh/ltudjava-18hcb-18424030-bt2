@@ -5,11 +5,13 @@
  */
 package quanlysinhvien_02;
 
+import DAO.DiemDAO;
 import DAO.LopDAO;
 import DAO.MonHocDAO;
 import DAO.SinhVienDAO;
 import DAO.SvMonHocDAO;
 import DAO.ThoiKhoaBieuDAO;
+import POJO.Diem;
 import POJO.Lop;
 import POJO.Monhoc;
 import POJO.Sinhvien;
@@ -41,10 +43,14 @@ public class quanLyThoiKhoaBieu extends javax.swing.JFrame {
     private String[] columnTKBLop = {
         "STT", "Mã Môn", "Tên Môn", "Học Kì"
     };    
-     private String[] columnTableSVMH = {
+    private String[] columnTableSVMH = {
         "STT", "MSSV", "Họ Tên", "Giới Tính", "CMND"
-    };    
+    }; 
+    private String[] columnDiem = {
+        "STT", "MSSV", "Họ Tên", "Điểm GK", "Điểm CK", "Điểm Khác", "Điểm Tổng", "Xếp Loại"
+    }; 
     private final int IMPORT_FILE = 1;
+    private final int IMPORT_FILE_SCORE = 2;
     quanlylop qlLop;
             
     public quanLyThoiKhoaBieu() {
@@ -607,70 +613,56 @@ public class quanLyThoiKhoaBieu extends javax.swing.JFrame {
 
     private void btnImportDiemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnImportDiemActionPerformed
         // TODO add your handling code here:
-//        importExportFile("Choose file import", IMPORT_FILE_SCORE);
+        importFile("Choose file import", IMPORT_FILE_SCORE);
     }//GEN-LAST:event_btnImportDiemActionPerformed
 
     private void btnDiemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDiemActionPerformed
         // TODO add your handling code here:
 
-//        notifyDSDiem.setVisible(false);
-//        panelListSV.setVisible(true);
+        notifyDSDiem.setVisible(false);
+        panelListSV.setVisible(true);
 //        panelThongKe.setVisible(true);
-//        tableResult.setRowSelectionAllowed(true);
-//        tableResult.setEnabled(true);
-//
-//        DefaultTableModel table = new DefaultTableModel();
-//
-//        String valueComboBox = cbBoxMHId.getSelectedItem().toString();
-//        Lop_MonHoc lop_MH = sc.getLopMonHoc(className, valueComboBox);
-//        lableDSSVLop.setText("Danh sách điểm: " + className + " - " + valueComboBox);
-//        labelThongKe.setText("Thống Kê " + className + "-" + valueComboBox);
-//        table.setColumnIdentifiers(columnNamesScore);
-//        //        System.out.println(this.className + "-" + valueComboBox);
-//        ArrayList<DiemSinhVien> listDiem = lop_MH.getListDiem();
-//
-//        int stt = 1;
-//        if(listDiem.size() > 0){
-//            for(DiemSinhVien item : listDiem){
-//                String[] rows = new String[8];
-//                rows[0] = String.valueOf(stt);
-//                rows[1] = item.getSV().getMSSV();
-//                rows[2] = item.getSV().getName();
-//                rows[3] = String.valueOf(item.getDiemGK());
-//                rows[4] = String.valueOf(item.getDiemCK());
-//                rows[5] = String.valueOf(item.getDiemKhac());
-//                rows[6] = String.valueOf(item.getDiemTong());
-//                rows[7] = item.xepLoai();
-//
-//                table.addRow(rows);
-//                stt++;
-//            }
-//            tableResult.setModel(table);
-//            panelUpdate.setVisible(true);
-//
-//            DecimalFormat decimalFormat = new DecimalFormat("#.##");
-//            float tiLePass = Float.valueOf(decimalFormat.format(lop_MH.ratioPass()));
-//            float tiLeFail = Float.valueOf(decimalFormat.format(lop_MH.ratioFail()));
-//            textSLPass.setText(String.valueOf(lop_MH.totalPass()));
-//            textTLPass.setText(String.valueOf(tiLePass));
-//            textSLFail.setText(String.valueOf(lop_MH.totalFail()));
-//            textTLFail.setText(String.valueOf(tiLeFail));
-//
-//        } else {
-//            textSLPass.setText("0");
-//            textTLPass.setText("0");
-//            textSLFail.setText("0");
-//            textTLFail.setText("0");
-//
-//            panelUpdate.setVisible(false);
-//            panelListSV.setVisible(true);
-//            lableDSSVLop.setVisible(true);
-//            notifyDSDiem.setVisible(true);
-//            notifyDSDiem.setText("Chưa Có Bảng Điểm!!!");
-//            lableDSSVLop.setText("Danh sách điểm: " + className + "-" + valueComboBox);
-//            tableResult.setModel(table);
-//            JOptionPane.showMessageDialog(null, "!!! Chưa Có Bảng Điểm");
-//        }
+        tableSVByMH.setRowSelectionAllowed(true);
+        tableSVByMH.setEnabled(true);
+
+        String valueComboBox = comboBoxMonHoc.getSelectedItem().toString();
+        DefaultTableModel table = new DefaultTableModel();//
+        
+        lableDSSVLop.setText("Danh sách điểm: " + className + " - " + valueComboBox);
+        table.setColumnIdentifiers(columnDiem);
+        
+        List<SvMonhoc> svmh = SvMonHocDAO.layThongTinMonHoc(className, valueComboBox);
+        int stt = 1;
+        for(SvMonhoc i : svmh){
+            Sinhvien sv = SinhVienDAO.layThongTinSV(i.getMaSV());
+            
+            List<Diem> listDiem = DiemDAO.layDSDiemById(i.getId());
+            
+            if(listDiem != null) {                
+                for(Diem diem : listDiem){
+                    System.out.println(sv.getMssv() +  " -" + sv.getHoTen() + " - "  + diem.getDiemTong() + " - " + diem.xepLoai());
+                    String[] rows = new String[8];
+                    rows[0] = String.valueOf(stt);
+                    rows[1] = sv.getMssv();
+                    rows[2] = sv.getHoTen();
+                    rows[3] = String.valueOf(diem.getDiemGk());
+                    rows[4] = String.valueOf(diem.getDiemCk());
+                    rows[5] = String.valueOf(diem.getDiemKhac());
+                    rows[6] = String.valueOf(diem.getDiemTong());
+                    rows[7] = diem.xepLoai();
+
+                    table.addRow(rows); 
+                    stt++;
+                }                
+                tableSVByMH.setModel(table);
+            } else {
+                notifyDSDiem.setText("Chưa Có Bảng Điểm!!!");
+                tableSVByMH.setModel(table);
+                JOptionPane.showMessageDialog(null, "!!! Chưa Có Bảng Điểm");
+                break;
+            }           
+            
+        }
     }//GEN-LAST:event_btnDiemActionPerformed
 
     private void btnSaveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSaveActionPerformed
@@ -884,6 +876,9 @@ public class quanLyThoiKhoaBieu extends javax.swing.JFrame {
         switch (type) {
             case IMPORT_FILE:
                 choose = fileChooser.showOpenDialog(null);
+                break;   
+            case IMPORT_FILE_SCORE:
+                choose = fileChooser.showOpenDialog(null);
                 break;
         }
 
@@ -892,7 +887,10 @@ public class quanLyThoiKhoaBieu extends javax.swing.JFrame {
             switch (type) {
                 case IMPORT_FILE:
                     readFile(f);
-                    break;                
+                    break;   
+                case IMPORT_FILE_SCORE:
+                    readFileScore(f);
+                    break;
             }
         }
     }
@@ -940,7 +938,7 @@ public class quanLyThoiKhoaBieu extends javax.swing.JFrame {
     private void showListSVMH(String maLop, String maMon, String hocKi){
         DefaultTableModel tableModel = new DefaultTableModel();
         tableModel.setColumnIdentifiers(columnTableSVMH);
-        lableDSSVLop.setText("Danh sách sinh viên: " + maLop + "-" + hocKi);
+        lableDSSVLop.setText("Danh sách sinh viên: " + maLop + "-" +  maMon);
         notify.setVisible(false);
         int stt = 1;
         List<Sinhvien> list = SvMonHocDAO.layThongTinSVMH(maLop,hocKi, maMon);
@@ -957,4 +955,11 @@ public class quanLyThoiKhoaBieu extends javax.swing.JFrame {
         }
         tableSVByMH.setModel(tableModel);
     }
+
+    private void readFileScore(File f) {
+        
+        
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
 }

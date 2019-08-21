@@ -76,8 +76,8 @@ public class SvMonHocDAO {
         }
         
         return list;
-    }
-    
+    }    
+       
     public static SvMonhoc layThongTin(int id) {
         SvMonhoc svmh = null;
         Session session = HibernateUtil.getSessionFactory().openSession();
@@ -89,6 +89,27 @@ public class SvMonHocDAO {
             session.close();
         }
         return svmh;
+    }
+    
+    public  static List<SvMonhoc> layThongTinMonHoc(String maLop, String maMon){
+        Session session = HibernateUtil.getSessionFactory().openSession();
+        List<SvMonhoc> listCourse = null;
+        
+        try {
+            String hql = "select svmh";
+            hql += " from SvMonhoc svmh";
+            hql += " where svmh.maLop=:maLop and svmh.maMh=:maMon";
+            Query query = session.createQuery(hql);
+            query.setParameter("maLop", maLop);
+            query.setParameter("maMon", maMon);
+            listCourse = query.list();
+        } catch(HibernateException ex) {
+            System.err.println(ex);
+        } finally {
+            session.close();
+        }
+        
+        return listCourse;
     }
     
     public static boolean themSV(SvMonhoc svmh){
