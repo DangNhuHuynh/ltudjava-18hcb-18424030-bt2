@@ -94,7 +94,7 @@ public class DiemDAO {
     
     public static boolean themTableDiem(Diem diem){
         Session session = HibernateUtil.getSessionFactory().openSession();
-        if(DiemDAO.layDSDiemSV(diem.getId(), diem.getSv()) != null){
+        if(DiemDAO.layDSDiemSVById(diem.getId()) != null){
             return false;
         }
         Transaction transaction = null;
@@ -107,7 +107,22 @@ public class DiemDAO {
         } finally {
             session.close();
         }
-
         return true;
+    }
+    
+    public static Diem layDSDiemSVById(int idSVMH){
+        Diem diemSV = null;
+        Session session = new HibernateUtil().getSessionFactory().openSession();
+        try{
+            diemSV = (Diem) session.get(Diem.class, idSVMH);
+            
+        }catch (HibernateException ex){
+            System.err.println(ex);            
+            
+        } finally {
+            session.close();
+        }
+               
+        return diemSV;
     }
 }

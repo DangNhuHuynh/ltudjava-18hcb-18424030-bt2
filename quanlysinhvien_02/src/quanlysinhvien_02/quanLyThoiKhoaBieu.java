@@ -635,12 +635,12 @@ public class quanLyThoiKhoaBieu extends javax.swing.JFrame {
         int stt = 1;
         for(SvMonhoc i : svmh){
             Sinhvien sv = SinhVienDAO.layThongTinSV(i.getMaSV());
-            
             List<Diem> listDiem = DiemDAO.layDSDiemById(i.getId());
             
-            if(listDiem != null) {                
+            System.out.println("size: " + listDiem.size());
+            if(listDiem.size() > 0) {                
                 for(Diem diem : listDiem){
-                    System.out.println(sv.getMssv() +  " -" + sv.getHoTen() + " - "  + diem.getDiemTong() + " - " + diem.xepLoai());
+                    System.out.println(diem.getId() + " - " + diem.getDiemTong() + " - " + diem.xepLoai());
                     String[] rows = new String[8];
                     rows[0] = String.valueOf(stt);
                     rows[1] = sv.getMssv();
@@ -655,14 +655,14 @@ public class quanLyThoiKhoaBieu extends javax.swing.JFrame {
                     stt++;
                 }                
                 tableSVByMH.setModel(table);
-            } else {
-                notifyDSDiem.setText("Chưa Có Bảng Điểm!!!");
+            } 
+            else {                
                 tableSVByMH.setModel(table);
-                JOptionPane.showMessageDialog(null, "!!! Chưa Có Bảng Điểm");
-                break;
+//                notifyDSDiem.setVisible(true);
+                notifyDSDiem.setText("Chưa Có Bảng Điểm!!!");
             }           
-            
         }
+        
     }//GEN-LAST:event_btnDiemActionPerformed
 
     private void btnSaveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSaveActionPerformed
@@ -908,8 +908,8 @@ public class quanLyThoiKhoaBieu extends javax.swing.JFrame {
                 String maLop = title[0];
                 String hocKi = comboHocKi.getSelectedItem().toString();
                 Thoikhoabieu tkb = new Thoikhoabieu();
-                
-                if(className.replaceAll("\\?", "").equalsIgnoreCase(maLop) || hocKi.equalsIgnoreCase(title[1])){  
+                String tenLop = className.replaceAll("\\?", "");
+                if(tenLop.equalsIgnoreCase(maLop) || hocKi.equalsIgnoreCase(title[1])){  
                     while ((line = buffer.readLine()) != null) {                        
                         String[] info = line.split(",");
                         String maMon = info[0];
@@ -942,24 +942,65 @@ public class quanLyThoiKhoaBieu extends javax.swing.JFrame {
         notify.setVisible(false);
         int stt = 1;
         List<Sinhvien> list = SvMonHocDAO.layThongTinSVMH(maLop,hocKi, maMon);
-        for(Sinhvien sv : list){
-            String[] item = new String[5];
-            item[0] = String.valueOf(stt);
-            item[1] = sv.getMssv();
-            item[2] = sv.getHoTen();
-            item[3] = sv.getGioiTinh();
-            item[4] = sv.getCmnd();
+        if(list.size() > 0){
+            for(Sinhvien sv : list){
+                String[] item = new String[5];
+                item[0] = String.valueOf(stt);
+                item[1] = sv.getMssv();
+                item[2] = sv.getHoTen();
+                item[3] = sv.getGioiTinh();
+                item[4] = sv.getCmnd();
 
-            tableModel.addRow(item);
-            stt++;
+                tableModel.addRow(item);
+                stt++;
+            }
+            tableSVByMH.setModel(tableModel);
+        } else {
+            tableSVByMH.setModel(tableModel);
+            notifyDSDiem.setVisible(true);
+            notifyDSDiem.setText("Chưa có DSSV....");
         }
-        tableSVByMH.setModel(tableModel);
+        
     }
 
-    private void readFileScore(File f) {
+    private void readFileScore(File file) {
+        try{
+            try (FileReader reader = new FileReader(file)){
+                BufferedReader buffer = new BufferedReader(reader);
+
+                String line;
+                
+                line = buffer.readLine();
+                String[] title = line.split(",");
+                String maMon = comboBoxMonHoc.getSelectedItem().toString();
+                
+                String target = className.replaceAll("\\?", "") + "-" + maMon;
+                if(target.equals(target)){
+                    while((line = buffer.readLine()) != null){
+                        String[] info = line.split(",");
+                        Sinhvien sv = SinhVienDAO.layThongTinSV(info[1]);
+                        
+                        if(sv != null){ 
+                            Diem diem = new Diem(Integer.valueOf(info[0]), sv);
+                            diem.setDiemGk(Float.valueOf(info[3]));
+                            diem.setDiemCk(Float.valueOf(info[4]));
+                            diem.setDiemKhac(Float.valueOf(info[5]));
+                            diem.setDiemTong(Float.valueOf(info[6]));
+                            diem.setIdSvmh(Integer.valueOf(info[0]));
+                            DiemDAO.themTableDiem(diem);
+                        } else {
+                            System.out.println(info[0]);
+                        }
+                    }
+                } else {
+                    JOptionPane.showMessageDialog(null, "File Điểm Không Đúng Lớp..... ");
+                }                
+                
+            }
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(null, "Error to open file: " + e.toString(), "Error", JOptionPane.ERROR_MESSAGE);
+        }
         
-        
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
 }

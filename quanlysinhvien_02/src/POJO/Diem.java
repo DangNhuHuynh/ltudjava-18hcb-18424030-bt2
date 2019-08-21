@@ -20,7 +20,7 @@ public class Diem  implements java.io.Serializable {
      private float diemTong;
      private Sinhvien sv = new Sinhvien();
      
-    public Diem() {
+     public Diem() {
         this.sv = null;
         this.diemGk = 0;
         this.diemCk = 0;
@@ -33,10 +33,8 @@ public class Diem  implements java.io.Serializable {
         this.sv = _sv;
     }
     
-    public Diem( Float diemGk, Float diemCk, Float diemKhac, Float diemTong, Sinhvien _sv) {
-//       this.maLop = maLop;
-//       this.maMh = maMh;
-//       this.mssv = mssv;
+    public Diem(Integer id, Float diemGk, Float diemCk, Float diemKhac, Float diemTong, Sinhvien _sv) {
+       this.idSvmh = id;
        this.diemGk = diemGk;
        this.diemCk = diemCk;
        this.diemKhac = diemKhac;
