@@ -6,7 +6,16 @@
 package quanlysinhvien_02;
 
 import DAO.AccountDAO;
+import DAO.LopDAO;
+import DAO.SinhVienDAO;
+import DAO.SvMonHocDAO;
+import DAO.ThoiKhoaBieuDAO;
 import POJO.Account;
+import POJO.Lop;
+import POJO.Sinhvien;
+import POJO.SvMonhoc;
+import POJO.Thoikhoabieu;
+import java.util.*;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
@@ -20,8 +29,15 @@ public class infoSinhVien extends javax.swing.JFrame {
     /**
      * Creates new form infoSinhVien
      */
+    
+    private final String[] columnNamesScore = {
+        "STT", "MSSV", "Họ Tên", "Điểm GK", "Điểm CK", "Điểm Khác", "Điểm Tổng", "Kết Quả"
+    };    
+    Sinhvien sv;
+    
     public infoSinhVien() {        
         initComponents();
+        sv = SinhVienDAO.layThongTinSV(account.getUsername());
         initLayout();
     }
 
@@ -254,14 +270,11 @@ public class infoSinhVien extends javax.swing.JFrame {
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
-    private final String[] columnNamesScore = {
-        "STT", "MSSV", "Họ Tên", "Điểm GK", "Điểm CK", "Điểm Khác", "Điểm Tổng", "Kết Quả"
-    };    
-    
     private void initLayout(){
         panelDoiMK.setVisible(false);
         lableNotify.setVisible(false);
         textMSSV.setText(account.getUsername());
+        this.sv = SinhVienDAO.layThongTinSV(account.getUsername());
         addComboBox();
     }
     
@@ -274,7 +287,14 @@ public class infoSinhVien extends javax.swing.JFrame {
     }
     
     private void addComboBox(){
-        DefaultComboBoxModel cbModel = new DefaultComboBoxModel();                     
+        DefaultComboBoxModel cbModel = new DefaultComboBoxModel();   
+//        this.sv = 
+        
+//        System.out.println("size: " + sv.getLop().getMaLop());
+//        
+//        List<Thoikhoabieu> list = ThoiKhoaBieuDAO.layTKBByLop(sv.getLop().getMaLop());
+        
+        
     }
     
     private boolean validFormChangePass(){

@@ -10,8 +10,8 @@ public class Diem  implements java.io.Serializable {
 
 
      private int id;
-//     private String maLop;
-//     private String maMh;
+     private String maLop;
+     private String maMh;
 //     private String mssv;
      private float diemGk;
      private float diemCk;
@@ -49,20 +49,20 @@ public class Diem  implements java.io.Serializable {
     public void setId(int id) {
         this.id = id;
     }
-//    public String getMaLop() {
-//        return this.maLop;
-//    }
-//    
-//    public void setMaLop(String maLop) {
-//        this.maLop = maLop;
-//    }
-//    public String getMaMh() {
-//        return this.maMh;
-//    }
-//    
-//    public void setMaMh(String maMh) {
-//        this.maMh = maMh;
-//    }
+    public String getMaLop() {
+        return this.maLop;
+    }
+    
+    public void setMaLop(String maLop) {
+        this.maLop = maLop;
+    }
+    public String getMaMh() {
+        return this.maMh;
+    }
+    
+    public void setMaMh(String maMh) {
+        this.maMh = maMh;
+    }
 //    public String getMssv() {
 //        return this.mssv;
 //    }

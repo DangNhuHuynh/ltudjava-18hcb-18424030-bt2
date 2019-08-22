@@ -8,12 +8,12 @@
             <column name="ID" />
             <generator class="identity" />
         </id>
-<!--        <property name="maLop" type="string">
+        <property name="maLop" type="string">
             <column name="MaLop" length="10" />
         </property>
         <property name="maMh" type="string">
             <column name="MaMH" length="10" />
-        </property>-->
+        </property>
 <!--        <property name="mssv" type="string">
             <column name="MSSV" length="10" />
         </property>-->

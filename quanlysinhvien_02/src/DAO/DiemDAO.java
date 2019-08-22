@@ -36,35 +36,19 @@ public class DiemDAO {
         return list;
     }
     
-    public static List<Diem> layDSDiemById(int id){
+    public static List<Diem> layDSDiemById(String maLop, String maMon){
         List<Diem> list = null;
         Session session = new HibernateUtil().getSessionFactory().openSession();
         try{
-            String str = "select d from Diem d where d.idSvmh =:id";
+            String str = "select d from Diem d where d.maLop =:maLop and d.maMh =:maMon";
             Query query = session.createQuery(str);
-            query.setInteger("id", id);
+            query.setString("maLop", maLop);
+            query.setString("maMon", maMon);
             list = query.list();
         
         }catch (HibernateException ex){
             System.err.println(ex);            
             
-        } finally {
-            session.close();
-        }
-        return list;
-    }
-    
-    public static List<SvMonhoc> layDSDiemSVMH(int id){
-        List<SvMonhoc> list = null;
-        Session session = new HibernateUtil().getSessionFactory().openSession();
-        try{
-            String str = "select d, svmh from Diem d, SvMonhoc svmh where d.idSvmh = svmh.id and d.idSvmh =:id";
-            Query query = session.createQuery(str);
-            query.setParameter("id", id);
-            list = query.list();
-        
-        }catch (HibernateException ex){
-            System.err.println(ex);           
         } finally {
             session.close();
         }
@@ -77,8 +61,9 @@ public class DiemDAO {
         try{
             String str = "select d from Diem d where d.idSvmh =:idSVMH and d.sv =:sv";
             Query query = session.createQuery(str);
-            query.setParameter("id", idSVMH);
+            query.setParameter("idSVMH", idSVMH);
             query.setParameter("sv", sv);
+            diemSV = query.list();
         }catch (HibernateException ex){
             System.err.println(ex);            
             
@@ -124,5 +109,24 @@ public class DiemDAO {
         }
                
         return diemSV;
+    }
+    
+    public static boolean updateDiem(Diem diem){
+        Session session = new HibernateUtil().getSessionFactory().openSession();
+        if(DiemDAO.layDSDiemSV(diem.getIdSvmh(), diem.getSv()) == null){
+            return false;
+        } 
+        Transaction trans = null;
+        try {
+            trans = session.beginTransaction();
+            session.update(diem);
+            trans.commit();
+        }catch (HibernateException ex){
+            trans.rollback();
+            System.err.println(ex);
+        } finally {
+            session.close();
+        }
+        return true;
     }
 }
