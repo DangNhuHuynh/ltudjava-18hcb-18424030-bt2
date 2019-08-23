@@ -18,10 +18,12 @@ import POJO.Sinhvien;
 import POJO.SvMonhoc;
 import POJO.Thoikhoabieu;
 import POJO.ThoikhoabieuId;
+import java.time.LocalDate;
 import java.util.*;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableModel;
 import static quanlysinhvien_02.login.account;
 /**
  *
@@ -84,6 +86,7 @@ public class infoSinhVien extends javax.swing.JFrame {
         jScrollPane1 = new javax.swing.JScrollPane();
         tableDiemSV = new javax.swing.JTable();
         lableNotify = new javax.swing.JLabel();
+        btnPhucKhao = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Thông Tin Sinh Viên");
@@ -217,11 +220,25 @@ public class infoSinhVien extends javax.swing.JFrame {
                 "Title 1", "Title 2", "Title 3", "Title 4"
             }
         ));
+        tableDiemSV.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                tableDiemSVMouseClicked(evt);
+            }
+        });
         jScrollPane1.setViewportView(tableDiemSV);
 
         lableNotify.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
         lableNotify.setForeground(new java.awt.Color(255, 51, 51));
         lableNotify.setText("jLabel1");
+
+        btnPhucKhao.setBackground(new java.awt.Color(153, 204, 255));
+        btnPhucKhao.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        btnPhucKhao.setText("Phúc Khảo");
+        btnPhucKhao.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnPhucKhaoActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -247,14 +264,17 @@ public class infoSinhVien extends javax.swing.JFrame {
                             .addComponent(btnLogout)
                             .addComponent(btnChangePass))
                         .addGap(39, 39, 39))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addComponent(lableDiem)
-                        .addGap(45, 45, 45)
-                        .addComponent(lableNotify, javax.swing.GroupLayout.PREFERRED_SIZE, 236, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(91, 91, 91))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 765, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(30, 30, 30))))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                        .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                            .addComponent(btnPhucKhao)
+                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(lableDiem)
+                            .addGap(45, 45, 45)
+                            .addComponent(lableNotify, javax.swing.GroupLayout.PREFERRED_SIZE, 236, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGap(158, 158, 158))
+                        .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                            .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 765, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGap(30, 30, 30)))))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -276,10 +296,11 @@ public class infoSinhVien extends javax.swing.JFrame {
                 .addGap(39, 39, 39)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(lableDiem)
-                    .addComponent(lableNotify))
+                    .addComponent(lableNotify)
+                    .addComponent(btnPhucKhao, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 158, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(64, Short.MAX_VALUE))
+                .addContainerGap(50, Short.MAX_VALUE))
         );
 
         pack();
@@ -290,6 +311,7 @@ public class infoSinhVien extends javax.swing.JFrame {
         panelDoiMK.setVisible(false);
         lableNotify.setVisible(false);
         textMSSV.setText(this.acc.getUsername());
+        btnPhucKhao.setVisible(false);
         addComboBox();
     }
     
@@ -407,6 +429,26 @@ public class infoSinhVien extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_jCbBoxMonHocActionPerformed
 
+    private void tableDiemSVMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tableDiemSVMouseClicked
+        // TODO add your handling code here:
+        btnPhucKhao.setVisible(true);
+    }//GEN-LAST:event_tableDiemSVMouseClicked
+
+    private void btnPhucKhaoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPhucKhaoActionPerformed
+        // TODO add your handling code here:
+        // so sánh ngày hiện tại với ngày mở phúc khảo
+//        LocalDate current = LocalDate.now();
+        int index = tableDiemSV.getSelectedRow();
+        TableModel md = tableDiemSV.getModel();
+        
+        String mssv = md.getValueAt(index, 0).toString();
+        String hoTen = md.getValueAt(index, 1).toString();
+        String monHoc = jCbBoxMonHoc.getSelectedItem().toString();
+        
+        FormTaoPhucKhao form = new FormTaoPhucKhao(mssv, hoTen, monHoc);
+        form.setVisible(true);
+    }//GEN-LAST:event_btnPhucKhaoActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -446,6 +488,7 @@ public class infoSinhVien extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnChangePass;
     private javax.swing.JButton btnLogout;
+    private javax.swing.JButton btnPhucKhao;
     private javax.swing.JButton btnSaveNewPass;
     private javax.swing.JComboBox<String> jCbBoxMonHoc;
     private javax.swing.JLabel jLabel2;

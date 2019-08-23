@@ -105,6 +105,7 @@ public class quanlylop extends javax.swing.JFrame {
         btnUpdate = new javax.swing.JButton();
         btnXoa = new javax.swing.JButton();
         btnSave = new javax.swing.JButton();
+        btnPhucKhao = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Giáo Vụ Quản Lý");
@@ -399,6 +400,15 @@ public class quanlylop extends javax.swing.JFrame {
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
+        btnPhucKhao.setBackground(new java.awt.Color(153, 204, 255));
+        btnPhucKhao.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        btnPhucKhao.setText("DS Phúc Khảo");
+        btnPhucKhao.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnPhucKhaoActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -435,7 +445,9 @@ public class quanlylop extends javax.swing.JFrame {
                         .addComponent(btnExport, javax.swing.GroupLayout.PREFERRED_SIZE, 122, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(0, 0, Short.MAX_VALUE))))
             .addGroup(layout.createSequentialGroup()
-                .addGap(116, 116, 116)
+                .addContainerGap()
+                .addComponent(btnPhucKhao)
+                .addGap(25, 25, 25)
                 .addComponent(panelDoiMK, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -458,7 +470,10 @@ public class quanlylop extends javax.swing.JFrame {
                         .addGap(32, 32, 32)
                         .addComponent(btnLogout)
                         .addGap(25, 25, 25)
-                        .addComponent(btnDoiMK)))
+                        .addComponent(btnDoiMK))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(48, 48, 48)
+                        .addComponent(btnPhucKhao, javax.swing.GroupLayout.PREFERRED_SIZE, 55, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addGap(55, 55, 55)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel2)
@@ -724,6 +739,12 @@ public class quanlylop extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_btnXoaActionPerformed
 
+    private void btnPhucKhaoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPhucKhaoActionPerformed
+        // TODO add your handling code here:
+        new QuanLyPhucKhao().setVisible(true);
+        this.setVisible(false);
+    }//GEN-LAST:event_btnPhucKhaoActionPerformed
+
     private boolean validCheck(){
         boolean isValid = false;        
         String mssv = textMSSV.getText();
@@ -979,6 +1000,7 @@ public class quanlylop extends javax.swing.JFrame {
     private javax.swing.JButton btnExport;
     private javax.swing.JButton btnImport;
     private javax.swing.JButton btnLogout;
+    private javax.swing.JButton btnPhucKhao;
     private javax.swing.JButton btnSave;
     private javax.swing.JButton btnSaveNewPass;
     private javax.swing.JButton btnTKB;

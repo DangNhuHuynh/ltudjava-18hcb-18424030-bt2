@@ -1,5 +1,4 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE hibernate-reverse-engineering PUBLIC "-//Hibernate/Hibernate Reverse Engineering DTD 3.0//EN" "http://hibernate.sourceforge.net/hibernate-reverse-engineering-3.0.dtd">
 <!--
 DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS HEADER.
 
@@ -39,18 +38,36 @@ made subject to such option by the copyright holder.
 
 Contributor(s):
 -->
-<hibernate-reverse-engineering>
-  <schema-selection match-catalog="quanlysinhvien"/>
-  <table-filter match-name="thoikhoabieu"/>
-  <table-filter match-name="monhoc"/>
-  <table-filter match-name="sinhvien"/>
-  <table-filter match-name="lop"/>
-  <table-filter match-name="diem"/>
-  <table-filter match-name="account"/>
-  <table-filter match-name="namhoc"/>
-  <table-filter match-name="sv_monhoc"/>
-  <table-filter match-name="namhoc"/>
-  <table-filter match-name="sv_monhoc"/>
-  <table-filter match-name="phuc_khao"/>
-  <table-filter match-name="lich_phuc_khao"/>
-</hibernate-reverse-engineering>
+
+<!DOCTYPE hibernate-mapping PUBLIC
+  "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+  "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping>
+
+    <class name="POJO.LichPhucKhao" table="lich_phuc_khao" catalog="quanlysinhvien" optimistic-lock="version">
+        <id name="id" type="java.lang.Integer">
+            <column name="ID" />
+            <generator class="identity" />
+        </id>
+        <property name="hocKi" type="string">
+            <column name="HocKi" length="5" />
+        </property>
+        <property name="namHoc" type="string">
+            <column name="NamHoc" length="10" />
+        </property>
+        <property name="tinhTrang" type="java.lang.Integer">
+            <column name="TinhTrang" />
+        </property>
+        <property name="ngayBatDau" type="timestamp">
+            <column name="NgayBatDau" length="19" not-null="true" />
+        </property>
+        <property name="ngayKetThuc" type="timestamp">
+            <column name="NgayKetThuc" length="19" not-null="true" />
+        </property>
+        <property name="svPhucKhao" type="string">
+            <column name="SV_PhucKhao" length="10" />
+        </property>
+    </class>
+
+</hibernate-mapping>

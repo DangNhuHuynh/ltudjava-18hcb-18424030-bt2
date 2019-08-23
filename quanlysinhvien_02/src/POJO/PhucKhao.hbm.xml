@@ -1,5 +1,4 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE hibernate-reverse-engineering PUBLIC "-//Hibernate/Hibernate Reverse Engineering DTD 3.0//EN" "http://hibernate.sourceforge.net/hibernate-reverse-engineering-3.0.dtd">
 <!--
 DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS HEADER.
 
@@ -39,18 +38,42 @@ made subject to such option by the copyright holder.
 
 Contributor(s):
 -->
-<hibernate-reverse-engineering>
-  <schema-selection match-catalog="quanlysinhvien"/>
-  <table-filter match-name="thoikhoabieu"/>
-  <table-filter match-name="monhoc"/>
-  <table-filter match-name="sinhvien"/>
-  <table-filter match-name="lop"/>
-  <table-filter match-name="diem"/>
-  <table-filter match-name="account"/>
-  <table-filter match-name="namhoc"/>
-  <table-filter match-name="sv_monhoc"/>
-  <table-filter match-name="namhoc"/>
-  <table-filter match-name="sv_monhoc"/>
-  <table-filter match-name="phuc_khao"/>
-  <table-filter match-name="lich_phuc_khao"/>
-</hibernate-reverse-engineering>
+
+<!DOCTYPE hibernate-mapping PUBLIC
+  "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+  "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping>
+
+    <class name="POJO.PhucKhao" table="phuc_khao" catalog="quanlysinhvien" optimistic-lock="version">
+        <id name="id" type="java.lang.Integer">
+            <column name="ID" />
+            <generator class="identity" />
+        </id>
+        <property name="mssv" type="string">
+            <column name="MSSV" length="10" />
+        </property>
+        <property name="hoTen" type="string">
+            <column name="HoTen" />
+        </property>
+        <property name="maMh" type="string">
+            <column name="MaMH" length="10" />
+        </property>
+        <property name="diemPhucKhao" type="java.lang.Float">
+            <column name="DiemPhucKhao" precision="12" scale="0" />
+        </property>
+        <property name="diemSuggest" type="java.lang.Float">
+            <column name="Diem_Suggest" precision="12" scale="0" />
+        </property>
+        <property name="lyDo" type="string">
+            <column name="LyDo" />
+        </property>
+        <property name="idLichPhucKhao" type="java.lang.Integer">
+            <column name="ID_LichPhucKhao" />
+        </property>
+        <property name="status" type="java.lang.Integer">
+            <column name="Status" />
+        </property>
+    </class>
+
+</hibernate-mapping>
