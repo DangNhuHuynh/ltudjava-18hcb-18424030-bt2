@@ -17,7 +17,7 @@ import java.util.List;
 import javax.swing.JOptionPane;
 
 public class login extends javax.swing.JFrame {
-    static Account account = new Account();
+    static Account account = null;
         
     /**
      * Creates new form login
@@ -55,10 +55,8 @@ public class login extends javax.swing.JFrame {
         jLabel3.setText("Password:");
 
         textUsername.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
-        textUsername.setText("giaovu");
 
         textPass.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
-        textPass.setText("123");
 
         btnLogin.setBackground(new java.awt.Color(153, 204, 255));
         btnLogin.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
@@ -128,7 +126,7 @@ public class login extends javax.swing.JFrame {
             }
             
             if(account.getRole() == 0){
-                infoSinhVien info = new infoSinhVien();
+                infoSinhVien info = new infoSinhVien(this, account);
                 info.setVisible(true);                
             }
         } else {

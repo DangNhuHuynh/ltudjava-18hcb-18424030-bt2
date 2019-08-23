@@ -16,6 +16,9 @@
         </property>
         <property name="cmnd" type="string">
             <column name="CMND" length="11" />
-        </property>        
+        </property>
+        <many-to-one class="POJO.Lop" name="lop" fetch="select" lazy="false">
+            <column length="10" name="MaLop" not-null="true"></column>
+        </many-to-one>        
     </class>
 </hibernate-mapping>

@@ -6,15 +6,18 @@
 package quanlysinhvien_02;
 
 import DAO.AccountDAO;
+import DAO.DiemDAO;
 import DAO.LopDAO;
 import DAO.SinhVienDAO;
 import DAO.SvMonHocDAO;
 import DAO.ThoiKhoaBieuDAO;
 import POJO.Account;
+import POJO.Diem;
 import POJO.Lop;
 import POJO.Sinhvien;
 import POJO.SvMonhoc;
 import POJO.Thoikhoabieu;
+import POJO.ThoikhoabieuId;
 import java.util.*;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JOptionPane;
@@ -31,16 +34,28 @@ public class infoSinhVien extends javax.swing.JFrame {
      */
     
     private final String[] columnNamesScore = {
-        "STT", "MSSV", "Họ Tên", "Điểm GK", "Điểm CK", "Điểm Khác", "Điểm Tổng", "Kết Quả"
+        "MSSV", "Họ Tên", "Điểm GK", "Điểm CK", "Điểm Khác", "Điểm Tổng", "Kết Quả"
     };    
     Sinhvien sv;
+    login lg;
+    Account acc;
     
-    public infoSinhVien() {        
-        initComponents();
-        sv = SinhVienDAO.layThongTinSV(account.getUsername());
+    public infoSinhVien() { 
+        initComponents();        
         initLayout();
     }
 
+    public infoSinhVien(login _login, Account acount) {
+        this.lg = _login;
+        this.acc = acount;
+        
+        this.sv = SinhVienDAO.layThongTinSV(this.acc.getUsername());
+        initComponents();
+        this.lg.setVisible(false);
+//        this.jPanelChangePasswd.setVisible(false);
+        initLayout();
+    }
+    
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -173,6 +188,7 @@ public class infoSinhVien extends javax.swing.JFrame {
         jLabel3.setText("Môn Học:");
 
         jCbBoxMonHoc.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        jCbBoxMonHoc.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "item1" }));
         jCbBoxMonHoc.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jCbBoxMonHocActionPerformed(evt);
@@ -222,7 +238,7 @@ public class infoSinhVien extends javax.swing.JFrame {
                 .addComponent(jCbBoxMonHoc, javax.swing.GroupLayout.PREFERRED_SIZE, 361, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(57, 57, 57))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(34, Short.MAX_VALUE)
+                .addContainerGap(37, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                         .addComponent(panelDoiMK, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -234,8 +250,8 @@ public class infoSinhVien extends javax.swing.JFrame {
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                         .addComponent(lableDiem)
                         .addGap(45, 45, 45)
-                        .addComponent(lableNotify)
-                        .addGap(277, 277, 277))
+                        .addComponent(lableNotify, javax.swing.GroupLayout.PREFERRED_SIZE, 236, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(91, 91, 91))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                         .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 765, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(30, 30, 30))))
@@ -246,9 +262,9 @@ public class infoSinhVien extends javax.swing.JFrame {
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(btnChangePass)
-                        .addGap(12, 12, 12)
-                        .addComponent(btnLogout))
+                        .addComponent(btnLogout)
+                        .addGap(18, 18, 18)
+                        .addComponent(btnChangePass))
                     .addComponent(panelDoiMK, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(43, 43, 43)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -273,8 +289,7 @@ public class infoSinhVien extends javax.swing.JFrame {
     private void initLayout(){
         panelDoiMK.setVisible(false);
         lableNotify.setVisible(false);
-        textMSSV.setText(account.getUsername());
-        this.sv = SinhVienDAO.layThongTinSV(account.getUsername());
+        textMSSV.setText(this.acc.getUsername());
         addComboBox();
     }
     
@@ -282,18 +297,40 @@ public class infoSinhVien extends javax.swing.JFrame {
         DefaultTableModel tableModel = new DefaultTableModel();
         tableModel.setColumnIdentifiers(columnNamesScore);
         
-        tableDiemSV.setModel(tableModel);           
-             
+        Diem diem = DiemDAO.diemSV(sv.getLop().getMaLop(), _idSubject, sv);
+       
+        if(diem != null){
+//            System.out.println("diem: " + diem.getSv().getMssv() + diem.getMaMh() + diem.getDiemTong());
+            String[] item = new String[7];
+            item[0] = diem.getSv().getMssv();
+            item[1] = diem.getSv().getHoTen();
+            item[2] = String.valueOf(diem.getDiemGk());
+            item[3] = String.valueOf(diem.getDiemCk());
+            item[4] = String.valueOf(diem.getDiemKhac());
+            item[5] = String.valueOf(diem.getDiemTong());
+            item[6] = diem.xepLoai();
+            
+            tableModel.addRow(item);
+        } 
+        else {
+            lableNotify.setVisible(true);
+            lableNotify.setText("Chưa Cập Nhật Điểm !!!");
+//            JOptionPane.showMessageDialog(null, "Chưa Cập Nhật Điểm !!!");
+        }
+        tableDiemSV.setModel(tableModel);         
     }
     
     private void addComboBox(){
         DefaultComboBoxModel cbModel = new DefaultComboBoxModel();   
-//        this.sv = 
         
-//        System.out.println("size: " + sv.getLop().getMaLop());
-//        
-//        List<Thoikhoabieu> list = ThoiKhoaBieuDAO.layTKBByLop(sv.getLop().getMaLop());
-        
+        List<Thoikhoabieu> list = ThoiKhoaBieuDAO.layTKBByLop(sv.getLop().getMaLop());
+        if(list.size() > 0){            
+            for(Thoikhoabieu tkb : list){
+//                System.out.println(tkb.getId().getMaMh() + " - " + tkb.getId().getMaLop());
+                cbModel.addElement(tkb.getId().getMaMh() + " - " + tkb.getTenMon());
+            }
+            jCbBoxMonHoc.setModel(cbModel);
+        }
         
     }
     
@@ -315,7 +352,7 @@ public class infoSinhVien extends javax.swing.JFrame {
                 valid = true;
             } else{
                 valid = false;
-            }            
+            }                                 
         }
         return valid;
     }
@@ -360,8 +397,11 @@ public class infoSinhVien extends javax.swing.JFrame {
         String value = jCbBoxMonHoc.getSelectedItem().toString();
         if(!value.equals("")){
             lableDiem.setText("Điểm Môn: " + value);
-            addTableScore(value);
-//            System.out.println("value: " + value);
+                        
+            String[] words=value.split("\\s");
+            
+            addTableScore(words[0]);
+            
         } else{
             JOptionPane.showMessageDialog(null, "Môn Học Chưa Cập Nhật!!!", "Error", JOptionPane.ERROR_MESSAGE);
         }

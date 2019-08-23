@@ -77,6 +77,29 @@ public class DiemDAO {
         return null;
     }
     
+    public static Diem diemSV(String maLop, String maMon, Sinhvien sv){
+        List<Diem> list = null;
+        Session session = new HibernateUtil().getSessionFactory().openSession();
+        try{
+            String str = "select d from Diem d where d.maLop =:maLop and d.maMh =:maMon and d.sv =:sv";
+            Query query = session.createQuery(str);
+            query.setString("maLop", maLop);
+            query.setString("maMon", maMon);
+            query.setParameter("sv", sv);
+            list = query.list();
+        
+        }catch (HibernateException ex){
+            System.err.println(ex);            
+            
+        } finally {
+            session.close();
+        }
+        if(list.size() > 0) {
+            return list.get(0);
+        }
+        return null;
+    }
+    
     public static boolean themTableDiem(Diem diem){
         Session session = HibernateUtil.getSessionFactory().openSession();
         if(DiemDAO.layDSDiemSVById(diem.getId()) != null){

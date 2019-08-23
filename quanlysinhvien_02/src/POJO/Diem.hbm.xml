@@ -32,7 +32,7 @@
         <property name="idSvmh" type="int">
             <column name="ID_SVMH" />
         </property>
-        <many-to-one name="sv" class="POJO.Sinhvien" fetch="select">
+        <many-to-one name="sv" class="POJO.Sinhvien" fetch="select" lazy="false">
             <column name="mssv" not-null="true"></column>
         </many-to-one>
     </class>
