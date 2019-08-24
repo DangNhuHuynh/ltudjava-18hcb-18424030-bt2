@@ -18,7 +18,7 @@ public class LichPhucKhao {
     private Integer tinhTrang;
     private Date ngayBatDau;
     private Date ngayKetThuc;
-    private String svPhucKhao;
+//    private String svPhucKhao;
 
     public LichPhucKhao() {
     }
@@ -28,13 +28,13 @@ public class LichPhucKhao {
         this.ngayBatDau = ngayBatDau;
         this.ngayKetThuc = ngayKetThuc;
     }
-    public LichPhucKhao(String hocKi, String namHoc, Integer tinhTrang, Date ngayBatDau, Date ngayKetThuc, String svPhucKhao) {
+    public LichPhucKhao(String hocKi, String namHoc, Integer tinhTrang, Date ngayBatDau, Date ngayKetThuc) {
        this.hocKi = hocKi;
        this.namHoc = namHoc;
        this.tinhTrang = tinhTrang;
        this.ngayBatDau = ngayBatDau;
        this.ngayKetThuc = ngayKetThuc;
-       this.svPhucKhao = svPhucKhao;
+//       this.svPhucKhao = svPhucKhao;
     }
    
     public Integer getId() {
@@ -79,11 +79,11 @@ public class LichPhucKhao {
     public void setNgayKetThuc(Date ngayKetThuc) {
         this.ngayKetThuc = ngayKetThuc;
     }
-    public String getSvPhucKhao() {
-        return this.svPhucKhao;
-    }
-    
-    public void setSvPhucKhao(String svPhucKhao) {
-        this.svPhucKhao = svPhucKhao;
-    }
+//    public String getSvPhucKhao() {
+//        return this.svPhucKhao;
+//    }
+//    
+//    public void setSvPhucKhao(String svPhucKhao) {
+//        this.svPhucKhao = svPhucKhao;
+//    }
 }

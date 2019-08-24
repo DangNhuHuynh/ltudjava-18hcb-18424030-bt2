@@ -65,9 +65,9 @@ Contributor(s):
         <property name="ngayKetThuc" type="timestamp">
             <column name="NgayKetThuc" length="19" not-null="true" />
         </property>
-        <property name="svPhucKhao" type="string">
+<!--        <property name="svPhucKhao" type="string">
             <column name="SV_PhucKhao" length="10" />
-        </property>
+        </property>-->
     </class>
 
 </hibernate-mapping>
