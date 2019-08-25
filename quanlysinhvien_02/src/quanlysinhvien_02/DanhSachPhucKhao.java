@@ -5,6 +5,13 @@
  */
 package quanlysinhvien_02;
 
+import DAO.PhucKhaoDAO;
+import POJO.LichPhucKhao;
+import POJO.PhucKhao;
+import java.util.List;
+import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableModel;
+
 /**
  *
  * @author Gogojungle
@@ -14,10 +21,24 @@ public class DanhSachPhucKhao extends javax.swing.JFrame {
     /**
      * Creates new form DanhSachPhucKhao
      */
+    QuanLyPhucKhao quanLiPhucKhao;
+    private int idLichPhucKhao;
+    final String[] columnNames = {
+        "STT", "ID", "MSSV", "Họ Tên", "Môn Học", "Cột Điểm", "Điểm Đề Nghị", "Lý Do", "Trạng Thái"
+    };
+    
+    
     public DanhSachPhucKhao() {
         initComponents();
     }
 
+    public DanhSachPhucKhao(QuanLyPhucKhao qlpk, int idLich){
+        this.quanLiPhucKhao = qlpk;
+        this.idLichPhucKhao = idLich;
+        this.quanLiPhucKhao.setVisible(false);
+        initComponents();
+        initLayout();
+    }
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -43,14 +64,15 @@ public class DanhSachPhucKhao extends javax.swing.JFrame {
         jLabel7 = new javax.swing.JLabel();
         comboCotDiem = new javax.swing.JComboBox<>();
         jLabel6 = new javax.swing.JLabel();
-        jComboBox1 = new javax.swing.JComboBox<>();
+        jComboStatus = new javax.swing.JComboBox<>();
         jLabel8 = new javax.swing.JLabel();
         btnUpdate = new javax.swing.JButton();
         jLabel1 = new javax.swing.JLabel();
-        jButton1 = new javax.swing.JButton();
+        lableNotify = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Danh Sách Phúc Khảo Sinh Viên");
+        getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         tableListPhucKhao.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         tableListPhucKhao.setModel(new javax.swing.table.DefaultTableModel(
@@ -64,7 +86,14 @@ public class DanhSachPhucKhao extends javax.swing.JFrame {
                 "Title 1", "Title 2", "Title 3", "Title 4"
             }
         ));
+        tableListPhucKhao.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                tableListPhucKhaoMouseClicked(evt);
+            }
+        });
         jScrollPane1.setViewportView(tableListPhucKhao);
+
+        getContentPane().add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(41, 343, 895, 220));
 
         panelUpdate.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 153, 153)));
 
@@ -98,9 +127,14 @@ public class DanhSachPhucKhao extends javax.swing.JFrame {
         jLabel6.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         jLabel6.setText("Lý Do:");
 
-        jComboBox1.setEditable(true);
-        jComboBox1.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
-        jComboBox1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Updated", "Not approved", "Waiting" }));
+        jComboStatus.setEditable(true);
+        jComboStatus.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        jComboStatus.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Chưa Xem", "Đã Cập Nhật", "Không Cập Nhật" }));
+        jComboStatus.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jComboStatusActionPerformed(evt);
+            }
+        });
 
         jLabel8.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         jLabel8.setText("Tình Trạng:");
@@ -108,6 +142,11 @@ public class DanhSachPhucKhao extends javax.swing.JFrame {
         btnUpdate.setBackground(new java.awt.Color(153, 204, 255));
         btnUpdate.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
         btnUpdate.setText("Cập Nhật");
+        btnUpdate.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnUpdateActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout panelUpdateLayout = new javax.swing.GroupLayout(panelUpdate);
         panelUpdate.setLayout(panelUpdateLayout);
@@ -148,7 +187,7 @@ public class DanhSachPhucKhao extends javax.swing.JFrame {
                     .addGroup(panelUpdateLayout.createSequentialGroup()
                         .addComponent(jLabel8)
                         .addGap(18, 18, 18)
-                        .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, 92, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addComponent(jComboStatus, javax.swing.GroupLayout.PREFERRED_SIZE, 92, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panelUpdateLayout.createSequentialGroup()
                         .addComponent(btnUpdate, javax.swing.GroupLayout.PREFERRED_SIZE, 99, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(26, 26, 26)))
@@ -186,59 +225,123 @@ public class DanhSachPhucKhao extends javax.swing.JFrame {
                 .addGap(55, 55, 55)
                 .addGroup(panelUpdateLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel8)
-                    .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jComboStatus, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(33, 33, 33)
                 .addComponent(btnUpdate, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(0, 0, Short.MAX_VALUE))
         );
 
+        getContentPane().add(panelUpdate, new org.netbeans.lib.awtextra.AbsoluteConstraints(98, 56, -1, -1));
+
         jLabel1.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
         jLabel1.setText("Danh Sách Sinh Viên Phúc Khảo ");
+        getContentPane().add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 313, -1, -1));
 
-        jButton1.setText("Đóng");
-
-        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
-        getContentPane().setLayout(layout);
-        layout.setHorizontalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(41, 41, 41)
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 895, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(50, 50, 50)
-                        .addComponent(jLabel1))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(98, 98, 98)
-                        .addComponent(panelUpdate, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(54, Short.MAX_VALUE))
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addGap(0, 0, Short.MAX_VALUE)
-                .addComponent(jButton1)
-                .addGap(20, 20, 20))
-        );
-        layout.setVerticalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jButton1)
-                .addGap(18, 18, Short.MAX_VALUE)
-                .addComponent(panelUpdate, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(66, 66, 66)
-                .addComponent(jLabel1)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 220, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(34, 34, 34))
-        );
+        lableNotify.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        lableNotify.setForeground(new java.awt.Color(255, 51, 51));
+        lableNotify.setText("Không Có Yêu Cầu Phúc Khảo...");
+        getContentPane().add(lableNotify, new org.netbeans.lib.awtextra.AbsoluteConstraints(306, 313, -1, -1));
 
         pack();
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
+    private void tableListPhucKhaoMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tableListPhucKhaoMouseClicked
+        // TODO add your handling code here:
+        int select = tableListPhucKhao.getSelectedRow();
+                
+        if(select >= 0){
+            panelUpdate.setVisible(true);
+            
+            String mssv = tableListPhucKhao.getValueAt(select, 2).toString();
+            String hoTen = tableListPhucKhao.getValueAt(select, 3).toString();
+            String maMon = tableListPhucKhao.getValueAt(select, 4).toString();
+            String cotDiem = tableListPhucKhao.getValueAt(select, 5).toString();
+            String diem = tableListPhucKhao.getValueAt(select, 6).toString();
+            String lyDo = tableListPhucKhao.getValueAt(select, 7).toString();
+            String status = tableListPhucKhao.getValueAt(select, 8).toString();
+            
+            textMSSV.setText(mssv);
+            textHoTen.setText(hoTen);
+            textMaMH.setText(maMon);
+            comboCotDiem.setSelectedItem(cotDiem);
+            textDiemRequest.setText(diem);
+            textAreaLyDo.setText(lyDo);
+            jComboStatus.setSelectedItem(status);
+        } else {
+            JOptionPane.showMessageDialog(null, "Vui Lòng Chọn Dòng Để Thực Hiện ...", "Thông báo", JOptionPane.WARNING_MESSAGE);
+        }
+    }//GEN-LAST:event_tableListPhucKhaoMouseClicked
+
+    private void jComboStatusActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboStatusActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jComboStatusActionPerformed
+
+    private void btnUpdateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnUpdateActionPerformed
+        // TODO add your handling code here:
+        int select = tableListPhucKhao.getSelectedRow();
+        int status = jComboStatus.getSelectedIndex();
+        tableListPhucKhao.getValueAt(select, 2).toString();
+        
+        String id = (String) tableListPhucKhao.getValueAt(select, 1);
+        Integer idPhucKhao = Integer.parseInt(id);
+        PhucKhao phucKhao = PhucKhaoDAO.getThongTin(idPhucKhao);
+        
+        if(phucKhao != null){
+            phucKhao.setStatus(status);
+            boolean result = PhucKhaoDAO.capNhatPhucKhao(phucKhao);
+            System.out.println(result);
+            if (result) {
+                JOptionPane.showMessageDialog(null, "Cập Nhật Thành Công.", "Thông báo", JOptionPane.INFORMATION_MESSAGE);                
+                this.panelUpdate.setVisible(false);
+                initLayout();
+            } else {
+                JOptionPane.showMessageDialog(null, "Cập Nhật Thất Bại.", "Error", JOptionPane.INFORMATION_MESSAGE);
+                initLayout();
+            }
+        }
+    }//GEN-LAST:event_btnUpdateActionPerformed
+
     /**
      * @param args the command line arguments
      */
+    
+    private void initLayout(){
+        lableNotify.setVisible(false);
+        panelUpdate.setVisible(false);
+        List<PhucKhao> list = PhucKhaoDAO.getListPhucKhao(idLichPhucKhao);
+        DefaultTableModel model = new DefaultTableModel();
+        model.setColumnIdentifiers(columnNames);
+        int stt = 1;
+        if(list.size() > 0){
+            for(PhucKhao i : list){
+                // "STT", "ID", "MSSV", "Họ Tên", "Môn Học", "Cột Điểm", "Điểm Đề Nghị", "Lý Do", "Trạng Thái"
+                String[] items = new String[9];
+                items[0] = String.valueOf(stt);
+                items[1] = i.getId().toString();
+                items[2] = i.getMssv();
+                items[3] = i.getHoTen();
+                items[4] = i.getMaMh();
+                items[5] = i.getCotDiem();
+                items[6] = i.getDiemSuggest().toString();
+                items[7] = i.getLyDo();
+                if(i.getStatus() == 0){
+                    items[8] = "Chưa Xem";
+                } else if(i.getStatus() == 1){
+                    items[8] = "Đã Cập Nhật";
+                } else {
+                    items[8] = "Không Cập Nhật";
+                }
+                
+               model.addRow(items);
+               stt++;
+            }
+            tableListPhucKhao.setModel(model);
+        } else {
+            lableNotify.setVisible(true);
+        }
+    }
+    
     public static void main(String args[]) {
         /* Set the Nimbus look and feel */
         //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
@@ -274,8 +377,7 @@ public class DanhSachPhucKhao extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnUpdate;
     private javax.swing.JComboBox<String> comboCotDiem;
-    private javax.swing.JButton jButton1;
-    private javax.swing.JComboBox<String> jComboBox1;
+    private javax.swing.JComboBox<String> jComboStatus;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
@@ -286,6 +388,7 @@ public class DanhSachPhucKhao extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel8;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
+    private javax.swing.JLabel lableNotify;
     private javax.swing.JPanel panelUpdate;
     private javax.swing.JTable tableListPhucKhao;
     private javax.swing.JTextArea textAreaLyDo;

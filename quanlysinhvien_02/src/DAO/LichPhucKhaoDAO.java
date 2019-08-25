@@ -108,7 +108,6 @@ public class LichPhucKhaoDAO {
         } finally {
             session.close();
         }
-
         return true;
     }
     

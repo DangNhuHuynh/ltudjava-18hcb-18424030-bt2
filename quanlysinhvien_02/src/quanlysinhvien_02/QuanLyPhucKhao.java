@@ -105,6 +105,8 @@ public class QuanLyPhucKhao extends javax.swing.JFrame {
 
         jLabelID.setText("ID:");
 
+        txtId.setEnabled(false);
+
         jLabelStatus.setText("Trạng Thái:");
 
         jComboBoxHocKi.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "HKI", "HKII", "HKIII" }));
@@ -313,7 +315,14 @@ public class QuanLyPhucKhao extends javax.swing.JFrame {
 
     private void btnViewListActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnViewListActionPerformed
         // TODO add your handling code here:
-        
+        int select = tableLichPhucKhao.getSelectedRow();
+        if(select >= 0){
+            Integer id = Integer.parseInt(tableLichPhucKhao.getValueAt(select, 1).toString());
+            DanhSachPhucKhao danhsach = new DanhSachPhucKhao(this, id);
+            danhsach.setVisible(true);
+        } else {
+            JOptionPane.showMessageDialog(null, "Vui lòng chọn dòng để thực hiện", "Thông báo", JOptionPane.WARNING_MESSAGE);
+        }
     }//GEN-LAST:event_btnViewListActionPerformed
 
     private void btnThemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnThemActionPerformed
@@ -343,12 +352,6 @@ public class QuanLyPhucKhao extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_btnThemActionPerformed
 
-    private void btnBackActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBackActionPerformed
-        // TODO add your handling code here:
-        this.dispose();
-        new quanlylop().setVisible(true);
-    }//GEN-LAST:event_btnBackActionPerformed
-
     private void btnUpdateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnUpdateActionPerformed
         // TODO add your handling code here:
         int selectRow = tableLichPhucKhao.getSelectedRow();
@@ -370,7 +373,7 @@ public class QuanLyPhucKhao extends javax.swing.JFrame {
                 
                 String end = (String) tableLichPhucKhao.getValueAt(selectRow, 3);
                 Date date2  = sdf.parse(end);
-                this.jDateStart.setDate(date2);
+                this.jDateEnd.setDate(date2);
                 
                 String hocKy = (String) tableLichPhucKhao.getValueAt(selectRow, 4);
                 this.jComboBoxHocKi.setSelectedItem(hocKy);
@@ -393,38 +396,32 @@ public class QuanLyPhucKhao extends javax.swing.JFrame {
     private void btnCapNhatActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCapNhatActionPerformed
         // TODO add your handling code here:
         int id = Integer.valueOf(this.txtId.getText());
-        String hocKi = this.jComboBoxStatus.getSelectedItem().toString();
-        String namHoc = String.valueOf(this.jYear.getYear()); 
-        String status = String.valueOf(jComboBoxStatus.getItemAt(jComboBoxStatus.getSelectedIndex()));
-        Date ngayBD = this.jDateStart.getDate();
-        Date ngayKT = this.jDateEnd.getDate();
+        int statusIndex = jComboBoxStatus.getSelectedIndex();
         
-        int tinhTrang = 0;
-        if (status.equals("Active")) {
-            tinhTrang = 1;
-        }
-        
-        System.out.println(status);
+//        System.out.println(statusIndex + " - " + id + " - " +  hocKi + " - " + namHoc + " - " + ngayBD);
         LichPhucKhao lich = LichPhucKhaoDAO.isExists(id);
         if(lich != null){
-            lich.setHocKi(hocKi);
-            lich.setNamHoc(namHoc);
-            lich.setTinhTrang(tinhTrang);    
-            
-            lich.setNgayBatDau(ngayBD);
-            lich.setNgayKetThuc(ngayKT);
+            lich.setTinhTrang(statusIndex);
             
             boolean result = LichPhucKhaoDAO.capNhatLichPhucKhao(lich);
+            System.out.println(result);
             if (result) {
-                JOptionPane.showMessageDialog(null, "Cập Nhật Thành Công.", "Thông báo", JOptionPane.INFORMATION_MESSAGE);
+                JOptionPane.showMessageDialog(null, "Cập Nhật Thành Công.", "Thông báo", JOptionPane.INFORMATION_MESSAGE);                
                 this.panelLichPhucKhao.setVisible(false);
                 initLayout();
+            } else {
+                JOptionPane.showMessageDialog(null, "Cập Nhật Thất Bại.", "Error", JOptionPane.INFORMATION_MESSAGE);
+                initLayout();
             }
-        } else {
-            JOptionPane.showMessageDialog(null, "Cập Nhật Thất Bại.", "Error", JOptionPane.INFORMATION_MESSAGE);
-            initLayout();
+            System.out.println(lich.getId() + " - " + lich.getTinhTrang());
         }
     }//GEN-LAST:event_btnCapNhatActionPerformed
+
+    private void btnBackActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBackActionPerformed
+        // TODO add your handling code here:
+        this.dispose();
+        new quanlylop().setVisible(true);
+    }//GEN-LAST:event_btnBackActionPerformed
 
     private void initLayout(){
         panelLichPhucKhao.setVisible(false);

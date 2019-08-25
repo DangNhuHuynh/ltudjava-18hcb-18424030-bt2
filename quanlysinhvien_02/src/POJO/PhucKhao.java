@@ -14,7 +14,7 @@ public class PhucKhao {
     private String mssv;
     private String hoTen;
     private String maMh;
-    private Float diemPhucKhao;
+    private String cotDiem;
     private Float diemSuggest;
     private String lyDo;
     private Integer idLichPhucKhao;
@@ -23,11 +23,11 @@ public class PhucKhao {
     public PhucKhao() {
     }
 
-    public PhucKhao(String mssv, String hoTen, String maMh, Float diemPhucKhao, Float diemSuggest, String lyDo, Integer idLichPhucKhao, Integer status) {
+    public PhucKhao(String mssv, String hoTen, String maMh, String cotDiem, Float diemSuggest, String lyDo, Integer idLichPhucKhao, Integer status) {
        this.mssv = mssv;
        this.hoTen = hoTen;
        this.maMh = maMh;
-       this.diemPhucKhao = diemPhucKhao;
+       this.cotDiem = cotDiem;
        this.diemSuggest = diemSuggest;
        this.lyDo = lyDo;
        this.idLichPhucKhao = idLichPhucKhao;
@@ -62,12 +62,12 @@ public class PhucKhao {
     public void setMaMh(String maMh) {
         this.maMh = maMh;
     }
-    public Float getDiemPhucKhao() {
-        return this.diemPhucKhao;
+    public String getCotDiem() {
+        return this.cotDiem;
     }
     
-    public void setDiemPhucKhao(Float diemPhucKhao) {
-        this.diemPhucKhao = diemPhucKhao;
+    public void setCotDiem(String cotDiemPhucKhao) {
+        this.cotDiem = cotDiemPhucKhao;
     }
     public Float getDiemSuggest() {
         return this.diemSuggest;

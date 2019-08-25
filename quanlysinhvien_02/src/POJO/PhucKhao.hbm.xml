@@ -59,8 +59,8 @@ Contributor(s):
         <property name="maMh" type="string">
             <column name="MaMH" length="10" />
         </property>
-        <property name="diemPhucKhao" type="java.lang.Float">
-            <column name="DiemPhucKhao" precision="12" scale="0" />
+        <property name="cotDiem" type="string">
+            <column name="Cot_Diem" length="10" />
         </property>
         <property name="diemSuggest" type="java.lang.Float">
             <column name="Diem_Suggest" precision="12" scale="0" />
