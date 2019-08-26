@@ -900,6 +900,8 @@ public class quanlylop extends javax.swing.JFrame {
                             Sinhvien sv = new Sinhvien(info[1], info[2], info[3], info[4], lop);
                             
                             SinhVienDAO.themSV(sv);
+                            Account acc = new Account(info[1], info[1], (byte) 0);
+                            AccountDAO.themAccount(acc);
                         }
                     } else {
                         System.out.println("Không Thành công");

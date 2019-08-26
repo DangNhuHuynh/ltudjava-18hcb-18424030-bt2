@@ -63,4 +63,23 @@ public class AccountDAO {
         }
         return true;
     }
+    public static boolean themAccount(Account acc){
+        Session session = HibernateUtil.getSessionFactory().openSession();
+        if(layThongTinTaiKhoan(acc.getUsername()) != null){
+            return false;
+        } 
+        Transaction trans = null;
+        try {
+            trans = session.beginTransaction();
+            session.save(acc);
+            trans.commit();
+        }catch (HibernateException ex){
+            trans.rollback();
+            System.err.println(ex);
+        } finally {
+            session.close();
+        }
+        return true;
+    }
+
 }
