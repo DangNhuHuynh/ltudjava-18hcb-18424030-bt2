@@ -33,6 +33,12 @@ public class Diem  implements java.io.Serializable {
         this.sv = _sv;
     }
     
+    public  Diem(String maMH, String maLop, Sinhvien _sv){
+        this.maMh = maMH;
+        this.maLop = maLop;
+        this.sv = _sv;
+    }
+    
     public Diem(Integer id, Float diemGk, Float diemCk, Float diemKhac, Float diemTong, Sinhvien _sv) {
        this.idSvmh = id;
        this.diemGk = diemGk;

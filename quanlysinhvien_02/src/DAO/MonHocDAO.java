@@ -10,6 +10,7 @@ import java.util.List;
 import org.hibernate.HibernateException;
 import org.hibernate.Query;
 import org.hibernate.Session;
+import org.hibernate.Transaction;
 
 /**
  *
@@ -29,4 +30,21 @@ public class MonHocDAO {
         return monHoc;
     }
     
+    public static void themMonHoc(Monhoc mh){
+        Session session = HibernateUtil.getSessionFactory().openSession();
+        if(MonHocDAO.laỵThongTinMonHoc(mh.getMaMh()) != null){
+            return;
+        } 
+        Transaction trans = null;
+        try {
+            trans = session.beginTransaction();
+            session.save(mh);
+            trans.commit();
+        }catch (HibernateException ex){
+            trans.rollback();
+            System.err.println(ex);
+        } finally {
+            session.close();
+        }
+    }
 }

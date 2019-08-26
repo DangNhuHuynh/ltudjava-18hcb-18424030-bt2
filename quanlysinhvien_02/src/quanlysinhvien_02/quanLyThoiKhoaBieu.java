@@ -169,7 +169,7 @@ public class quanLyThoiKhoaBieu extends javax.swing.JFrame {
         notify.setFont(new java.awt.Font("Tahoma", 2, 18)); // NOI18N
         notify.setForeground(new java.awt.Color(255, 51, 0));
         notify.setText("Chưa Có Thời Khóa Biểu!");
-        getContentPane().add(notify, new org.netbeans.lib.awtextra.AbsoluteConstraints(255, 445, 213, -1));
+        getContentPane().add(notify, new org.netbeans.lib.awtextra.AbsoluteConstraints(440, 440, 213, -1));
 
         comboHocKi.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         comboHocKi.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "ALL", "HKI", "HKII", "HKIII" }));
@@ -1216,13 +1216,21 @@ public class quanLyThoiKhoaBieu extends javax.swing.JFrame {
                 String[] title = line.split(",");
 //                String maLop = title[0];
                 String maLop = title[0];
+                String maMon = "";
                 String hocKi = comboHocKi.getSelectedItem().toString();
                 Thoikhoabieu tkb = new Thoikhoabieu();
-                String tenLop = className.replaceAll("\\?", "");
-                if(tenLop.equalsIgnoreCase(maLop) || hocKi.equalsIgnoreCase(title[1])){  
+                System.out.println("ten lop - maLop: " + className + " - " + title[0]);
+                if(className.equals(title[0]) && hocKi.equalsIgnoreCase(title[1])){  
+                    
                     while ((line = buffer.readLine()) != null) {                        
                         String[] info = line.split(",");
-                        String maMon = info[0];
+                        maMon = info[0];
+                        
+                        Monhoc mh = new Monhoc();
+                        mh.setMaMh(maMon);
+                        mh.setTenMh(info[1]);                        
+                        MonHocDAO.themMonHoc(mh);
+                        
                         Monhoc monHoc = MonHocDAO.laỵThongTinMonHoc(maMon);
                         ThoikhoabieuId id = new ThoikhoabieuId(maLop, maMon);
                         
@@ -1230,13 +1238,22 @@ public class quanLyThoiKhoaBieu extends javax.swing.JFrame {
                         tkb.setMonhoc(monHoc);
                         tkb.setPhongHoc(info[2]);
                         tkb.setHocKi(hocKi);
-                        tkb.setTenMon(info[1]);
+                        tkb.setTenMon(info[1]);                        
                         
-                        ThoiKhoaBieuDAO.themTKB(tkb);                        
-                    }                                        
+                        ThoiKhoaBieuDAO.themTKB(tkb);  
+                        
+                       Lop lop = LopDAO.layThongTinLop(className);
+                        List<Sinhvien> list = SinhVienDAO.layDSSVTheoLop(lop);
+                        for(Sinhvien sv : list){
+                            SvMonhoc svmh = new SvMonhoc(sv.getMssv(), maMon, className);
+                            SvMonHocDAO.themSV(svmh);
+                        }
+                    }
+                      
                 } else {
                     JOptionPane.showMessageDialog(null, "Thời Khóa Biểu Sai Lớp..... ");  
-                }                
+                }    
+                
                buffer.close();
             } 
             chiTietTKB(comboHocKi.getSelectedItem().toString());
@@ -1284,26 +1301,28 @@ public class quanLyThoiKhoaBieu extends javax.swing.JFrame {
                 String[] title = line.split(",");
                 String maMon = comboBoxMonHoc.getSelectedItem().toString();
                 
-                String target = className.replaceAll("\\?", "") + "-" + maMon;
-                if(target.equals(target)){
+                String target = className + "-" + maMon;
+                if(title[0].equals(target)){
                     while((line = buffer.readLine()) != null){
                         String[] info = line.split(",");
-                        Sinhvien sv = SinhVienDAO.layThongTinSV(info[1]);
-                        
+                        Sinhvien sv = SinhVienDAO.layThongTinSV(info[0]);
+                        SvMonhoc svmh = SvMonHocDAO.layThongTin(className, maMon, info[0]);
                         if(sv != null){ 
-                            Diem diem = new Diem(Integer.valueOf(info[0]), sv);
-                            diem.setDiemGk(Float.valueOf(info[3]));
-                            diem.setDiemCk(Float.valueOf(info[4]));
-                            diem.setDiemKhac(Float.valueOf(info[5]));
-                            diem.setDiemTong(Float.valueOf(info[6]));
-                            diem.setIdSvmh(Integer.valueOf(info[0]));
+                            Diem diem = new Diem(svmh.getId(), sv);
+                            diem.setDiemGk(Float.valueOf(info[2]));
+                            diem.setDiemCk(Float.valueOf(info[3]));
+                            diem.setDiemKhac(Float.valueOf(info[4]));
+                            diem.setDiemTong(Float.valueOf(info[5]));
+                            diem.setIdSvmh(svmh.getId());
                             diem.setMaLop(className);
                             diem.setMaMh(maMon);
+                            
                             DiemDAO.themTableDiem(diem);
                         } else {
                             System.out.println(info[0]);
                         }
                     }
+                    showTableDiem();
                 } else {
                     JOptionPane.showMessageDialog(null, "File Điểm Không Đúng Lớp..... ");
                 }                

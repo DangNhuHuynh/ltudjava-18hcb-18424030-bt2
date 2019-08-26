@@ -5,6 +5,7 @@
  */
 package DAO;
 
+import POJO.Lop;
 import POJO.Sinhvien;
 import java.util.List;
 import org.hibernate.HibernateException;
@@ -34,14 +35,14 @@ public class SinhVienDAO {
         return list;
     }
     
-    public static List<Sinhvien> layDSSVTheoLop(String maLop){
+    public static List<Sinhvien> layDSSVTheoLop(Lop lop){
         List<Sinhvien> list = null;
         Session session = new HibernateUtil().getSessionFactory().openSession();
             
         try{
-            String str = "select * from Sinhvien sv where sv.MaLop := maLop";
+            String str = "select sv from Sinhvien sv where sv.lop =:lop";
             Query query = session.createQuery(str);
-            query.setString("maLop", maLop);
+            query.setParameter("lop", lop);
             list = query.list();
         }catch (HibernateException ex){
             System.err.println(ex);            

@@ -312,7 +312,7 @@ public class infoSinhVien extends javax.swing.JFrame {
         lableNotify.setVisible(false);
         textMSSV.setText(this.acc.getUsername());
         btnPhucKhao.setVisible(false);
-        addComboBox();
+        addComboBox(); 
     }
     
     private void addTableScore(String _idSubject){

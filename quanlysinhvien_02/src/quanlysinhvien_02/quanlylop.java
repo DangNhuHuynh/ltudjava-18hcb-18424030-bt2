@@ -893,6 +893,7 @@ public class quanlylop extends javax.swing.JFrame {
                 if(checkLopHoc != true ){ 
                     boolean kq = LopDAO.themLop(lop);
                     if(kq == true){
+                        JOptionPane.showMessageDialog(null, "Thêm Thành công!!!!");
                         System.out.println("Thêm Thành công");
                         while ((line = buffer.readLine()) != null) {                     
                             String[] info = line.split(",");

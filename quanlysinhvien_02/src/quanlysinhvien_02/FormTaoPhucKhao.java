@@ -115,11 +115,11 @@ public class FormTaoPhucKhao extends javax.swing.JFrame {
 
         jLabel1.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
         jLabel1.setText("Phúc Khảo Điểm");
-        getContentPane().add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(359, 48, -1, 41));
+        getContentPane().add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(400, 40, -1, 41));
 
         jLabel8.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
         jLabel8.setText("Lịch Phúc Khảo");
-        getContentPane().add(jLabel8, new org.netbeans.lib.awtextra.AbsoluteConstraints(87, 416, -1, -1));
+        getContentPane().add(jLabel8, new org.netbeans.lib.awtextra.AbsoluteConstraints(120, 380, -1, -1));
 
         tableLichPhucKhao.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         tableLichPhucKhao.setModel(new javax.swing.table.DefaultTableModel(
@@ -135,7 +135,7 @@ public class FormTaoPhucKhao extends javax.swing.JFrame {
         ));
         jScrollPane2.setViewportView(tableLichPhucKhao);
 
-        getContentPane().add(jScrollPane2, new org.netbeans.lib.awtextra.AbsoluteConstraints(68, 446, 838, 173));
+        getContentPane().add(jScrollPane2, new org.netbeans.lib.awtextra.AbsoluteConstraints(100, 410, 838, 173));
 
         jPanelTaoPhucKhao.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
 
@@ -255,7 +255,7 @@ public class FormTaoPhucKhao extends javax.swing.JFrame {
                 .addGap(26, 26, 26))
         );
 
-        getContentPane().add(jPanelTaoPhucKhao, new org.netbeans.lib.awtextra.AbsoluteConstraints(77, 136, -1, -1));
+        getContentPane().add(jPanelTaoPhucKhao, new org.netbeans.lib.awtextra.AbsoluteConstraints(80, 100, -1, -1));
 
         btnThem.setBackground(new java.awt.Color(153, 204, 255));
         btnThem.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
@@ -265,7 +265,7 @@ public class FormTaoPhucKhao extends javax.swing.JFrame {
                 btnThemActionPerformed(evt);
             }
         });
-        getContentPane().add(btnThem, new org.netbeans.lib.awtextra.AbsoluteConstraints(675, 393, 76, 40));
+        getContentPane().add(btnThem, new org.netbeans.lib.awtextra.AbsoluteConstraints(710, 360, 76, 40));
 
         pack();
         setLocationRelativeTo(null);
@@ -292,7 +292,7 @@ public class FormTaoPhucKhao extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(null, "Gửi Phúc Khảo Thành Công ...", "Thông báo", JOptionPane.WARNING_MESSAGE);
 
         } else {
-            JOptionPane.showMessageDialog(null, "Gửi Thất Bại !!!", "Thông báo", JOptionPane.WARNING_MESSAGE);
+            JOptionPane.showMessageDialog(null, "Môn Vừa Chọn Đã Gửi Phúc Khảo !!!", "Thông báo", JOptionPane.WARNING_MESSAGE);
         }
     }//GEN-LAST:event_btnSubmitActionPerformed
 
